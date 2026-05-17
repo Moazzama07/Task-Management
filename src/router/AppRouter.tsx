@@ -16,7 +16,7 @@ export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/task" replace />} />
+        <Route path="/" element={<Navigate to="/overview " replace />} />
 
         <Route
           path="/overview"

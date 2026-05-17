@@ -49,7 +49,7 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
                         <div className="flex h-7 w-7 items-center justify-center rounded-lg ">
                             <img src="/book-square.svg" alt="Logo" />
                         </div>
-                        <span className="text-[16px] font-semibold text-[#1A1A2E]">Nuegas</span>
+                        <span className="text-[16px] font-semibold text-[#1A1A2E]">Task Management</span>
                     </div>
                     <button onClick={onClose} className="md:hidden text-gray-400 hover:text-gray-600">
                         <X className="h-5 w-5" />
