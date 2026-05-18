@@ -1,5 +1,3 @@
-"use client"
-
 import type { ReactNode } from "react"
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import { DashboardLayout } from "@/components/dashboardLayout"
@@ -59,7 +57,6 @@ export default function AppRouter() {
           }
         />
 
-        <Route path="*" element={<Navigate to="/task" replace />} />
       </Routes>
     </BrowserRouter>
   )
