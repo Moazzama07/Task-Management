@@ -193,14 +193,14 @@ export default function Overview() {
                 </div>
 
                 {/* ── RUNNING TASK + ACTIVITY (side by side) ── */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 lg:grid-cols-[194px_minmax(0,1fr)] gap-[18px]">
 
                     {/* Running Task */}
-                    <div className="rounded-2xl bg-[#3C3C46] text-white p-5 shadow-sm">
-                        <p className="text-[10px] font-semibold uppercase tracking-widest text-white/40 mb-4">Running Task</p>
+                    <div className="rounded-2xl bg-[#141522] text-white p-4 shadow-sm">
+                        <p className="text-[10px] font-semibold uppercase tracking-widest text-white/40 mb-3">Running Task</p>
                         <div className="flex items-center gap-4">
                             {/* donut */}
-                            <div className="relative w-[72px] h-[72px] shrink-0">
+                            <div className="relative w-[62px] h-[62px] shrink-0">
                                 <svg viewBox="0 0 72 72" className="w-full h-full -rotate-90">
                                     <circle cx="36" cy="36" r="28" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="9" />
                                     <circle cx="36" cy="36" r="28" fill="none" stroke="#4F6EF7" strokeWidth="9"
@@ -210,7 +210,7 @@ export default function Overview() {
                                 <span className="absolute inset-0 flex items-center justify-center text-xs font-bold">45%</span>
                             </div>
                             <div>
-                                <p className="text-4xl font-extrabold leading-none">65</p>
+                                <p className="text-3xl font-extrabold leading-none">65</p>
                                 <p className="text-xs text-white/40 mt-1">
                                     of <span className="text-white font-semibold">100</span> Task
                                 </p>
