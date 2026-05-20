@@ -96,7 +96,7 @@ export default function UpcomingTask() {
                 {visibleCards.map((task) => (
                     <article
                         key={task.id}
-                        className="overflow-hidden rounded-3xl bg-[#FAFAFC] transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+                        className="overflow-hidden rounded-3xl border border-black/5 bg-[#FAFAFC] transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
                     >
                         {/* Image */}
                         <div className="h-[170px] w-full overflow-hidden">
