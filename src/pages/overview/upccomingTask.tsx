@@ -1,58 +1,124 @@
 import { Clock, ChevronLeft, ChevronRight } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
+import image1 from "@/assets/Image (1).svg"
+import image2 from "@/assets/Image (2).svg"
+
 const UPCOMING_DATA = [
     {
-        id: 1, title: "Creating Mobile App Design", category: "UI/UX Design", progress: 75, daysLeft: 3,
-        image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=300&q=80",
-        avatars: ["https://i.pravatar.cc/24?img=1", "https://i.pravatar.cc/24?img=2", "https://i.pravatar.cc/24?img=3"],
+        id: 1,
+        title: "Creating Mobile App Design",
+        category: "UI/UX Design",
+        progress: 75,
+        daysLeft: 3,
+        image: image1,
+        avatars: [
+            "https://i.pravatar.cc/40?img=1",
+            "https://i.pravatar.cc/40?img=2",
+            "https://i.pravatar.cc/40?img=3",
+        ],
     },
     {
-        id: 2, title: "Creating Perfect Website", category: "Web Developer", progress: 85, daysLeft: 4,
-        image: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=300&q=80",
-        avatars: ["https://i.pravatar.cc/24?img=4", "https://i.pravatar.cc/24?img=5", "https://i.pravatar.cc/24?img=6"],
+        id: 2,
+        title: "Creating Perfect Website",
+        category: "Web Developer",
+        progress: 85,
+        daysLeft: 4,
+        image: image2,
+        avatars: [
+            "https://i.pravatar.cc/40?img=4",
+            "https://i.pravatar.cc/40?img=5",
+            "https://i.pravatar.cc/40?img=6",
+        ],
     },
 ]
 
-export default function UpccomingTask() {
+export default function UpcomingTask() {
     return (
-        <div className="rounded-2xl bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] p-5">
-            <div className="flex items-center justify-between mb-4">
-                <p className="text-sm font-semibold text-[#1A1A2E]">Upcoming Task</p>
-                <div className="flex gap-1">
-                    {[ChevronLeft, ChevronRight].map((Icon, i) => (
-                        <button key={i} className="w-7 h-7 rounded-full bg-[#F5F5F8] flex items-center justify-center text-[#9999A8] hover:bg-[#EDEDF2] transition-colors">
-                            <Icon className="h-3 w-3" />
+        <section className="rounded-3xl p-5">
+            {/* Header */}
+            <div className="mb-5 flex items-center justify-between">
+                <h2 className="text-[24px] font-semibold text-[#1A1A2E]">
+                    Upcoming Task
+                </h2>
+
+                <div className="flex items-center gap-4"> {/* Figma ke mutabiq gap thora zyada hai */}
+                    {[ChevronLeft, ChevronRight].map((Icon, index) => (
+                        <button
+                            key={index}
+                            className="flex items-center justify-center text-[#141522] transition-colors hover:text-[#8E92BC]"
+                        >
+
+                            <Icon className="h-7 w-7 stroke-[2]" />
                         </button>
                     ))}
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {UPCOMING_DATA.map((t) => (
-                    <div key={t.id} className="rounded-xl overflow-hidden bg-[#FAFAFA] hover:shadow-md transition-shadow">
-                        <img src={t.image} alt={t.title} className="w-full h-28 object-cover" />
-                        <div className="p-3 space-y-1.5">
-                            <p className="text-[11px] text-[#4F6EF7] font-semibold">{t.category}</p>
-                            <p className="text-sm font-semibold text-[#1A1A2E] leading-snug">{t.title}</p>
-                            <div className="flex items-center justify-between text-xs text-[#9999A8]">
-                                <span>Progress</span>
-                                <span className="text-[#4F6EF7] font-semibold">{t.progress}%</span>
-                            </div>
-                            {/* Custom progress bar — Figma style */}
-                            <div className="w-full bg-[#EEF1FE] rounded-full h-1.5">
-                                <div className="bg-[#4F6EF7] h-1.5 rounded-full transition-all" style={{ width: `${t.progress}%` }} />
-                            </div>
-                            <div className="flex items-center justify-between pt-0.5">
-                                <div className="flex items-center gap-1 text-xs text-[#9999A8]">
-                                    <Clock className="h-3 w-3" />
-                                    <span>{t.daysLeft} Days Left</span>
+            {/* Cards */}
+            <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 ">
+                {UPCOMING_DATA.map((task) => (
+                    <div
+                        key={task.id}
+                        className="overflow-hidden rounded-2xl bg-[#FAFAFC] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                    >
+                        {/* Image */}
+                        <div className="h-[140px] w-full overflow-hidden ">
+                            <img
+                                src={task.image}
+                                alt={task.title}
+                                className="h-full w-full object-cover"
+                            />
+                        </div>
+
+                        {/* Content */}
+                        <div className="space-y-3 p-4">
+
+                            {/* Title */}
+                            <h3 className="text-[16px] font-semibold leading-snug text-[#141522]">
+                                {task.title}
+                            </h3>
+                            {/* Category */}
+                            <span className="text-[12px] font-medium uppercase tracking-wide text-[#54577A]">
+                                {task.category}
+                            </span>
+
+                            {/* Progress */}
+                            <div className="space-y-1.5">
+                                <div className="flex items-center justify-between text-[16px] font-medium">
+                                    <span className="text-[#141522]">Progress</span>
+                                    <span className="font-semibold text-[#546FFF]">
+                                        {task.progress}%
+                                    </span>
                                 </div>
-                                <div className="flex -space-x-1.5">
-                                    {t.avatars.map((a, i) => (
-                                        <Avatar key={i} className="h-5 w-5 border-2 border-white">
-                                            <AvatarImage src={a} />
-                                            <AvatarFallback className="text-[8px]">{i + 1}</AvatarFallback>
+
+                                <div className="h-2 w-full rounded-full bg-[#E9EDFF]">
+                                    <div
+                                        className="h-2 rounded-full bg-[#546FFF] transition-all duration-500"
+                                        style={{ width: `${task.progress}%` }}
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Footer */}
+                            <div className="flex items-center justify-between pt-1">
+                                {/* Days Left */}
+                                <div className="flex items-center gap-2 text-[16px] text-[#141522]">
+                                    <Clock className="h-5 w-5" />
+                                    <span>{task.daysLeft} Days Left</span>
+                                </div>
+
+                                {/* Avatars */}
+                                <div className="flex -space-x-2">
+                                    {task.avatars.map((avatar, index) => (
+                                        <Avatar
+                                            key={index}
+                                            className="h-7 w-7 border-2 border-white"
+                                        >
+                                            <AvatarImage src={avatar} />
+                                            <AvatarFallback className="text-[10px]">
+                                                {index + 1}
+                                            </AvatarFallback>
                                         </Avatar>
                                     ))}
                                 </div>
@@ -61,6 +127,6 @@ export default function UpccomingTask() {
                     </div>
                 ))}
             </div>
-        </div>
+        </section>
     )
 }
