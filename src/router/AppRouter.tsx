@@ -1,8 +1,9 @@
 import type { ReactNode } from "react"
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import { DashboardLayout } from "@/components/dashboardLayout"
-import Overview from "@/pages/Overview"
-import Index from "@/pages/Index"
+
+// ── Overview sub-pages (split components) ────────────────────────────────────
+import Overview from "@/pages/overview/index"
 
 // ── simple wrapper for placeholder pages ──────────────────────────────────────
 function PageWrapper({ children }: { children: ReactNode }) {
@@ -21,22 +22,12 @@ export default function AppRouter() {
         {/* Default → /overview */}
         <Route path="/" element={<Navigate to="/overview" replace />} />
 
-        {/* ── Overview: Greeting + Running Task + Activity ── */}
+        {/* ── Overview: Greeting + Running Task + Activity + Mentors + Upcoming + Sidebar ── */}
         <Route
           path="/overview"
           element={
             <DashboardLayout title="Overview">
               <Overview />
-            </DashboardLayout>
-          }
-        />
-
-        {/* ── Dashboard home: Mentors + Upcoming + Calendar + Task Today ── */}
-        <Route
-          path="/dashboard"
-          element={
-            <DashboardLayout title="Dashboard">
-              <Index />
             </DashboardLayout>
           }
         />
