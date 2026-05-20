@@ -92,14 +92,14 @@ export default function UpcomingTask() {
             </div>
 
             {/* Cards */}
-            <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
+            <div className="grid grid-cols-1 gap-5 xl:grid-cols-2 ">
                 {visibleCards.map((task) => (
                     <article
                         key={task.id}
-                        className="overflow-hidden rounded-3xl border border-black/5 bg-[#FAFAFC] transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+                        className="overflow-hidden border border-black/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md rounded-2xl bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] p-4"
                     >
                         {/* Image */}
-                        <div className="h-[170px] w-full overflow-hidden">
+                        <div className="h-[170px] w-full rounded-2xl overflow-hidden">
                             <img
                                 src={task.image}
                                 alt={task.title}
