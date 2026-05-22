@@ -125,7 +125,7 @@ export default function MonthlyMentors() {
                 {visibleMentors.map((mentor) => (
                     <div
                         key={mentor.id}
-                        className="rounded-2xl bg-white flex items-center justify-between p-4 sm:p-6"
+                        className="rounded-2xl bg-white flex items-center justify-between p-4 sm:p-6 border border-black/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md shadow-[0_2px_12px_rgba(0,0,0,0.06)] "
                     >
                         <div className="flex items-center gap-3 sm:gap-4">
                             <Avatar className="h-12 w-12 sm:h-14 sm:w-14 flex-shrink-0">
