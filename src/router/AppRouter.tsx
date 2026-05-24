@@ -4,6 +4,7 @@ import { DashboardLayout } from "@/components/dashboardLayout"
 
 // ── Overview sub-pages (split components) ────────────────────────────────────
 import Overview from "@/pages/overview/index"
+import Task from "@/pages/task/Task"
 
 // ── simple wrapper for placeholder pages ──────────────────────────────────────
 function PageWrapper({ children }: { children: ReactNode }) {
@@ -37,9 +38,7 @@ export default function AppRouter() {
           path="/task"
           element={
             <DashboardLayout title="Explore Task">
-              <PageWrapper>
-                Manage and explore your tasks from this dashboard view.
-              </PageWrapper>
+              <Task />
             </DashboardLayout>
           }
         />
