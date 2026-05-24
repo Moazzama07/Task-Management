@@ -164,7 +164,10 @@ function HorizontalCarousel({ title, tasks }: { title: string; tasks: Task[] }) 
                     style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
                 >
                     {tasks.map((task) => (
-                        <div key={task.id} style={{ minWidth: "calc((100% - 32px) / 3)" }}>
+                        <div
+                            key={task.id}
+                            className="min-w-full sm:min-w-[calc((100%-16px)/2)] lg:min-w-[calc((100%-32px)/3)]"
+                        >
                             <TaskCard task={task} />
                         </div>
                     ))}
