@@ -128,7 +128,12 @@ function HorizontalCarousel({ title, tasks }: { title: string; tasks: Task[] }) 
     const scroll = (dir: "left" | "right") => {
         const el = scrollRef.current
         if (!el) return
-        const amount = el.clientWidth / 3
+        const amount =
+            window.innerWidth < 640
+                ? el.clientWidth
+                : window.innerWidth < 1024
+                    ? el.clientWidth / 2
+                    : el.clientWidth / 3
         el.scrollBy({ left: dir === "left" ? -amount : amount, behavior: "smooth" })
     }
 
