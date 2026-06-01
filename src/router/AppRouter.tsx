@@ -5,6 +5,7 @@ import { DashboardLayout } from "@/components/dashboardLayout"
 // ── Overview sub-pages (split components) ────────────────────────────────────
 import Overview from "@/pages/overview/index"
 import Task from "@/pages/task/Task"
+import Mentors from "@/pages/mentors/Mentors"
 
 // ── simple wrapper for placeholder pages ──────────────────────────────────────
 function PageWrapper({ children }: { children: ReactNode }) {
@@ -48,9 +49,7 @@ export default function AppRouter() {
           path="/mentors"
           element={
             <DashboardLayout title="Mentors">
-              <PageWrapper>
-                Connect with mentors and review guidance resources here.
-              </PageWrapper>
+              <Mentors />
             </DashboardLayout>
           }
         />
