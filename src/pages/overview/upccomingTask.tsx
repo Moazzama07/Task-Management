@@ -112,13 +112,13 @@ export default function UpcomingTask() {
                         <div className="space-y-5 p-5">
                             {/* Title */}
                             <div className="space-y-1">
-                                <p className="text-xs font-medium uppercase tracking-[0.12em] text-[#8E92BC]">
-                                    {task.category}
-                                </p>
-
                                 <h3 className="text-lg font-semibold leading-snug text-[#141522]">
                                     {task.title}
                                 </h3>
+
+                                <p className="text-xs font-medium uppercase tracking-[0.12em] text-[#54577A]">
+                                    {task.category}
+                                </p>
                             </div>
 
                             {/* Progress */}

@@ -1,71 +1,14 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Clock, ChevronLeft, ChevronRight } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { type Task } from "./Newtask"
 
-interface Task {
-    id: number
-    title: string
-    category: string
-    progress: number
-    timeLeft: string
-    image: string
-    avatars: string[]
-}
-
-interface TimeLimitProps {
-    tasks: Task[]
-}
-
-const CARDS_VISIBLE = 2
-
-export default function TimeLimit({ tasks }: TimeLimitProps) {
-    const [startIndex, setStartIndex] = useState(0)
-
-    const canPrev = startIndex > 0
-    const canNext = startIndex < tasks.length - CARDS_VISIBLE
-
-    const visibleTasks = tasks.slice(startIndex, startIndex + CARDS_VISIBLE)
-
-    return (
-        <section>
-            {/* Header */}
-            <div className="mb-5 flex items-center justify-between">
-                <h2 className="text-xl font-semibold text-[#141522]">Time Limit</h2>
-
-                <div className="flex items-center gap-2">
-                    <button
-                        onClick={() => canPrev && setStartIndex((p) => p - 1)}
-                        disabled={!canPrev}
-                        className="flex h-9 w-9 items-center justify-center rounded-full border border-[#E9EDFF] bg-white transition-all hover:bg-[#F5F6FF] disabled:cursor-not-allowed disabled:opacity-40"
-                    >
-                        <ChevronLeft className="h-5 w-5 text-[#141522]" />
-                    </button>
-
-                    <button
-                        onClick={() => canNext && setStartIndex((p) => p + 1)}
-                        disabled={!canNext}
-                        className="flex h-9 w-9 items-center justify-center rounded-full border border-[#E9EDFF] bg-white transition-all hover:bg-[#F5F6FF] disabled:cursor-not-allowed disabled:opacity-40"
-                    >
-                        <ChevronRight className="h-5 w-5 text-[#141522]" />
-                    </button>
-                </div>
-            </div>
-
-            {/* Cards Grid */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {visibleTasks.map((task) => (
-                    <TaskCard key={task.id} task={task} />
-                ))}
-            </div>
-        </section>
-    )
-}
+// TaskCard 
 
 function TaskCard({ task }: { task: Task }) {
     return (
-        <article className="group overflow-hidden rounded-2xl border border-black/5 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
-            {/* Image */}
-            <div className="h-[160px] w-full overflow-hidden">
+        <article className="group flex-shrink-0 overflow-hidden rounded-2xl border border-black/5 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
+            <div className="h-[150px] w-full overflow-hidden">
                 <img
                     src={task.image}
                     alt={task.title}
@@ -73,20 +16,15 @@ function TaskCard({ task }: { task: Task }) {
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
             </div>
-
-            {/* Body */}
-            <div className="space-y-4 p-4">
-                {/* Title */}
+            <div className="space-y-3 p-4">
                 <div className="space-y-0.5">
-                    <p className="text-[10px] font-semibold uppercase tracking-widest text-[#8E92BC]">
-                        {task.category}
-                    </p>
-                    <h3 className="text-[15px] font-semibold leading-snug text-[#141522]">
+                    <h3 className="text-lg font-semibold leading-snug text-[#141522]">
                         {task.title}
                     </h3>
+                    <p className="text-xs font-medium uppercase tracking-[0.12em] text-[#54577A]">
+                        {task.category}
+                    </p>
                 </div>
-
-                {/* Progress */}
                 <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
                         <span className="text-xs font-medium text-[#54577A]">Progress</span>
@@ -99,19 +37,16 @@ function TaskCard({ task }: { task: Task }) {
                         />
                     </div>
                 </div>
-
-                {/* Footer */}
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1.5 text-xs font-medium text-[#54577A]">
                         <Clock className="h-3.5 w-3.5" />
                         <span>{task.timeLeft}</span>
                     </div>
-
                     <div className="flex -space-x-2">
                         {task.avatars.slice(0, 4).map((avatar, i) => (
-                            <Avatar key={i} className="h-7 w-7 border-2 border-white">
+                            <Avatar key={i} className="h-6 w-6 border-2 border-white">
                                 <AvatarImage src={avatar} />
-                                <AvatarFallback className="text-[9px] bg-[#E9EDFF] text-[#546FFF]">
+                                <AvatarFallback className="text-[8px] bg-[#E9EDFF] text-[#546FFF]">
                                     {i + 1}
                                 </AvatarFallback>
                             </Avatar>
@@ -120,5 +55,75 @@ function TaskCard({ task }: { task: Task }) {
                 </div>
             </div>
         </article>
+    )
+}
+
+// HorizontalCarousel 
+
+export function HorizontalCarousel({ title, tasks }: { title: string; tasks: Task[] }) {
+    const scrollRef = useRef<HTMLDivElement>(null)
+    const [canScrollLeft, setCanScrollLeft] = useState(false)
+    const [canScrollRight, setCanScrollRight] = useState(tasks.length > 3)
+
+    const updateArrows = () => {
+        const el = scrollRef.current
+        if (!el) return
+        setCanScrollLeft(el.scrollLeft > 4)
+        setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4)
+    }
+
+    const scroll = (dir: "left" | "right") => {
+        const el = scrollRef.current
+        if (!el) return
+        const amount =
+            window.innerWidth < 640
+                ? el.clientWidth
+                : window.innerWidth < 1024
+                    ? el.clientWidth / 2
+                    : el.clientWidth / 3
+        el.scrollBy({ left: dir === "left" ? -amount : amount, behavior: "smooth" })
+    }
+
+    if (tasks.length === 0) return null
+
+    return (
+        <section>
+            <div className="mb-4 flex items-center justify-between">
+                <h2 className="text-[24px] font-semibold text-[#141522]">{title}</h2>
+                <div className="flex items-center gap-2">
+                    <button
+                        onClick={() => scroll("left")}
+                        disabled={!canScrollLeft}
+                        className="flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200 hover:bg-[#F5F5F7] disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                        <ChevronLeft className="h-6 w-6 text-[#141522]" />
+                    </button>
+                    <button
+                        onClick={() => scroll("right")}
+                        disabled={!canScrollRight}
+                        className="flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200 hover:bg-[#F5F5F7] disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                        <ChevronRight className="h-6 w-6 text-[#141522]" />
+                    </button>
+                </div>
+            </div>
+            <div className="overflow-hidden">
+                <div
+                    ref={scrollRef}
+                    onScroll={updateArrows}
+                    className="flex gap-4 overflow-x-auto scroll-smooth"
+                    style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+                >
+                    {tasks.map((task) => (
+                        <div
+                            key={task.id}
+                            className="min-w-full sm:min-w-[calc((100%-16px)/2)] lg:min-w-[calc((100%-32px)/3)]"
+                        >
+                            <TaskCard task={task} />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
     )
 }

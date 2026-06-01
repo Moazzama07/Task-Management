@@ -1,4 +1,4 @@
-// ─── Types ────────────────────────────────────────────────────────────────────
+//Types 
 
 export interface Task {
     id: number
@@ -10,7 +10,7 @@ export interface Task {
     avatars: string[]
 }
 
-// ─── Constants ────────────────────────────────────────────────────────────────
+// Constants
 
 export const NEW_TASKS: Task[] = [
     {

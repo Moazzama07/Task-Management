@@ -1,10 +1,12 @@
-import { useState, useMemo, useRef } from "react"
-import { Clock, ChevronLeft, ChevronRight, Search as SearchIcon } from "lucide-react"
+import { useState, useMemo } from "react"
+import { Search as SearchIcon } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Clock } from "lucide-react"
 import SearchBar from "@/pages/task/Search"
 import { NEW_TASKS, type Task } from "./Newtask"
+import { HorizontalCarousel } from "./Timelimit"
 
-// ─── Constants ────────────────────────────────────────────────────────────────
+// Constants 
 
 const TIME_LIMIT_TASKS: Task[] = [
     {
@@ -56,7 +58,7 @@ const TIME_LIMIT_TASKS: Task[] = [
 
 const ALL_TASKS = [...TIME_LIMIT_TASKS, ...NEW_TASKS]
 
-// ─── TaskCard ─────────────────────────────────────────────────────────────────
+// TaskCard 
 
 function TaskCard({ task }: { task: Task }) {
     return (
@@ -71,12 +73,8 @@ function TaskCard({ task }: { task: Task }) {
             </div>
             <div className="space-y-3 p-4">
                 <div className="space-y-0.5">
-                    <p className="text-[10px] font-semibold uppercase tracking-widest text-[#8E92BC]">
-                        {task.category}
-                    </p>
-                    <h3 className="line-clamp-2 text-[14px] font-semibold leading-snug text-[#141522]">
-                        {task.title}
-                    </h3>
+                    <h3 className="text-lg font-semibold leading-snug text-[#141522]">{task.title}</h3>
+                    <p className="text-xs font-medium uppercase tracking-[0.12em] text-[#54577A]">{task.category}</p>
                 </div>
                 <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
@@ -85,7 +83,7 @@ function TaskCard({ task }: { task: Task }) {
                     </div>
                     <div className="h-1.5 w-full rounded-full bg-[#E9EDFF]">
                         <div
-                            className="h-full rounded-full bg-[#546FFF] transition-all duration-700"
+                            className="h-full rounded-full bg-[#546FFF] transition-all duration-500"
                             style={{ width: `${task.progress}%` }}
                         />
                     </div>
@@ -99,9 +97,7 @@ function TaskCard({ task }: { task: Task }) {
                         {task.avatars.slice(0, 4).map((avatar, i) => (
                             <Avatar key={i} className="h-6 w-6 border-2 border-white">
                                 <AvatarImage src={avatar} />
-                                <AvatarFallback className="text-[8px] bg-[#E9EDFF] text-[#546FFF]">
-                                    {i + 1}
-                                </AvatarFallback>
+                                <AvatarFallback className="text-[8px] bg-[#E9EDFF] text-[#546FFF]">{i + 1}</AvatarFallback>
                             </Avatar>
                         ))}
                     </div>
@@ -111,78 +107,7 @@ function TaskCard({ task }: { task: Task }) {
     )
 }
 
-// ─── HorizontalCarousel ───────────────────────────────────────────────────────
-
-function HorizontalCarousel({ title, tasks }: { title: string; tasks: Task[] }) {
-    const scrollRef = useRef<HTMLDivElement>(null)
-    const [canScrollLeft, setCanScrollLeft] = useState(false)
-    const [canScrollRight, setCanScrollRight] = useState(tasks.length > 3)
-
-    const updateArrows = () => {
-        const el = scrollRef.current
-        if (!el) return
-        setCanScrollLeft(el.scrollLeft > 4)
-        setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4)
-    }
-
-    const scroll = (dir: "left" | "right") => {
-        const el = scrollRef.current
-        if (!el) return
-        const amount =
-            window.innerWidth < 640
-                ? el.clientWidth
-                : window.innerWidth < 1024
-                    ? el.clientWidth / 2
-                    : el.clientWidth / 3
-        el.scrollBy({ left: dir === "left" ? -amount : amount, behavior: "smooth" })
-    }
-
-    if (tasks.length === 0) return null
-
-    return (
-        <section>
-            <div className="mb-4 flex items-center justify-between">
-                <h2 className="text-xl font-semibold text-[#141522]">{title}</h2>
-                <div className="flex items-center gap-2">
-                    <button
-                        onClick={() => scroll("left")}
-                        disabled={!canScrollLeft}
-                        className="flex h-9 w-9 items-center justify-center rounded-full border border-[#E9EDFF] bg-white transition-all hover:bg-[#F5F6FF] disabled:cursor-not-allowed disabled:opacity-40"
-                    >
-                        <ChevronLeft className="h-5 w-5 text-[#141522]" />
-                    </button>
-                    <button
-                        onClick={() => scroll("right")}
-                        disabled={!canScrollRight}
-                        className="flex h-9 w-9 items-center justify-center rounded-full border border-[#E9EDFF] bg-white transition-all hover:bg-[#F5F6FF] disabled:cursor-not-allowed disabled:opacity-40"
-                    >
-                        <ChevronRight className="h-5 w-5 text-[#141522]" />
-                    </button>
-                </div>
-            </div>
-
-            <div className="overflow-hidden">
-                <div
-                    ref={scrollRef}
-                    onScroll={updateArrows}
-                    className="flex gap-4 overflow-x-auto scroll-smooth"
-                    style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-                >
-                    {tasks.map((task) => (
-                        <div
-                            key={task.id}
-                            className="min-w-full sm:min-w-[calc((100%-16px)/2)] lg:min-w-[calc((100%-32px)/3)]"
-                        >
-                            <TaskCard task={task} />
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </section>
-    )
-}
-
-// ─── Main Task Page ───────────────────────────────────────────────────────────
+// Main Task Page 
 
 export default function Task() {
     const [searchQuery, setSearchQuery] = useState("")
@@ -195,9 +120,7 @@ export default function Task() {
         if (searchQuery.trim()) {
             const q = searchQuery.toLowerCase()
             tasks = tasks.filter(
-                (t) =>
-                    t.title.toLowerCase().includes(q) ||
-                    t.category.toLowerCase().includes(q)
+                (t) => t.title.toLowerCase().includes(q) || t.category.toLowerCase().includes(q)
             )
         }
 
@@ -222,7 +145,6 @@ export default function Task() {
 
     return (
         <div className="space-y-8">
-            {/* Search Bar — Figma style */}
             <SearchBar
                 onSearch={setSearchQuery}
                 onCategoryChange={setSelectedCategory}
@@ -231,7 +153,6 @@ export default function Task() {
                 selectedSort={selectedSort}
             />
 
-            {/* No results */}
             {filteredTasks.length === 0 && (
                 <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-[#8E92BC]/40 bg-white py-16 text-center">
                     <SearchIcon className="mb-3 h-10 w-10 text-[#8E92BC]/50" />
@@ -240,19 +161,13 @@ export default function Task() {
                 </div>
             )}
 
-            {/* Default: horizontal carousels */}
             {!isFiltering && (
                 <>
-                    {timeLimitTasks.length > 0 && (
-                        <HorizontalCarousel title="Time Limit" tasks={timeLimitTasks} />
-                    )}
-                    {newTasks.length > 0 && (
-                        <HorizontalCarousel title="New Task" tasks={newTasks} />
-                    )}
+                    <HorizontalCarousel title="Time Limit" tasks={timeLimitTasks} />
+                    <HorizontalCarousel title="New Task" tasks={newTasks} />
                 </>
             )}
 
-            {/* Filtered flat grid */}
             {isFiltering && filteredTasks.length > 0 && (
                 <section>
                     <h2 className="mb-5 text-xl font-semibold text-[#141522]">
