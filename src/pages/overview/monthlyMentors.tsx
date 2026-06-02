@@ -48,38 +48,26 @@ const mentorsData = [
 export default function MonthlyMentors() {
     const [mentors, setMentors] = useState(mentorsData)
     const [startIndex, setStartIndex] = useState(0)
-
     const [visibleCount, setVisibleCount] = useState(2)
 
     useEffect(() => {
         const updateVisibleCount = () => {
             setVisibleCount(window.innerWidth < 1280 ? 1 : 2)
         }
-
         updateVisibleCount()
-
         window.addEventListener("resize", updateVisibleCount)
-
-        return () =>
-            window.removeEventListener("resize", updateVisibleCount)
+        return () => window.removeEventListener("resize", updateVisibleCount)
     }, [])
 
     useEffect(() => {
         setStartIndex(0)
     }, [visibleCount])
 
-    const visibleMentors = mentors.slice(
-        startIndex,
-        startIndex + visibleCount
-    )
+    const visibleMentors = mentors.slice(startIndex, startIndex + visibleCount)
 
     const toggleFollow = (id: number) => {
         setMentors((prev) =>
-            prev.map((m) =>
-                m.id === id
-                    ? { ...m, following: !m.following }
-                    : m
-            )
+            prev.map((m) => (m.id === id ? { ...m, following: !m.following } : m))
         )
     }
 
@@ -124,65 +112,58 @@ export default function MonthlyMentors() {
                 </div>
             </div>
 
-            {/* Cards */}
+            {/* Cards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {visibleMentors.map((mentor) => (
                     <div
                         key={mentor.id}
-                        className="rounded-2xl bg-white flex items-center justify-between gap-3 p-4 border border-black/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
+                        className="rounded-2xl bg-white flex flex-col justify-between gap-4 p-4 border border-black/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
                     >
-                        {/* Left */}
-                        <div className="flex min-w-0 items-center gap-3">
-                            <Avatar className="h-11 w-11 flex-shrink-0">
-                                <AvatarImage
-                                    src={mentor.avatar}
-                                    alt={mentor.name}
-                                />
-                                <AvatarFallback className="bg-[#EEF2FF] text-[#546FFF] font-semibold">
-                                    {mentor.name[0]}
-                                </AvatarFallback>
-                            </Avatar>
+                        {/* Top Row: Avatar, Info, and Follow Button */}
+                        <div className="flex items-center justify-between gap-3">
+                            <div className="flex min-w-0 items-center gap-3">
+                                <Avatar className="h-11 w-11 flex-shrink-0">
+                                    <AvatarImage src={mentor.avatar} alt={mentor.name} />
+                                    <AvatarFallback className="bg-[#EEF2FF] text-[#546FFF] font-semibold">
+                                        {mentor.name[0]}
+                                    </AvatarFallback>
+                                </Avatar>
 
-                            <div className="min-w-0">
-                                <h3 className="truncate text-sm font-semibold text-[#141522]">
-                                    {mentor.name}
-                                </h3>
-
-                                <p className="text-xs text-[#9C9CA4]">
-                                    {mentor.role}
-                                </p>
-
-                                <div className="mt-1.5 flex items-center gap-3 text-xs">
-                                    <div className="flex items-center gap-1 text-[#54577A]">
-                                        <Briefcase className="h-3.5 w-3.5" />
-                                        {mentor.tasks} Task
-                                    </div>
-
-                                    <div className="flex items-center gap-1">
-                                        <Star className="h-3.5 w-3.5 fill-[#FFB648] text-[#FFB648]" />
-                                        <span className="text-[#141522]">{mentor.rating}</span>
-                                        <span className="text-[#8E92BC]">({mentor.reviews})</span>
-                                    </div>
+                                <div className="min-w-0">
+                                    <h3 className="truncate text-sm font-semibold text-[#141522]">
+                                        {mentor.name}
+                                    </h3>
+                                    <p className="text-xs text-[#9C9CA4]">
+                                        {mentor.role}
+                                    </p>
                                 </div>
                             </div>
+
+                            <button
+                                onClick={() => toggleFollow(mentor.id)}
+                                className={`rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition-colors duration-200 cursor-pointer whitespace-nowrap
+                                    ${mentor.following
+                                        ? "bg-[#EEF2FF] text-[#54577A]"
+                                        : "text-[#546FFF] bg-transparent border border-[#546FFF]/20"
+                                    }`}
+                            >
+                                {mentor.following ? "Followed" : "+ Follow"}
+                            </button>
                         </div>
 
-                        {/* Follow Button */}
-                        <button
-                            onClick={() =>
-                                toggleFollow(mentor.id)
-                            }
-                            className={`w-full sm:w-auto rounded-full px-4 sm:px-5 py-2 text-xs sm:text-sm font-semibold transition-colors duration-200 cursor-pointer
-                            
-                            ${mentor.following
-                                    ? "bg-[#EEF2FF] text-[#54577A]"
-                                    : "text-[#546FFF] bg-transparent border border-[#546FFF]/20"
-                                }`}
-                        >
-                            {mentor.following
-                                ? "Followed"
-                                : "+ Follow"}
-                        </button>
+
+                        <div className="flex w-full items-center justify-between border-t border-gray-50 pt-3 text-xs text-[#54577A]">
+                            <div className="flex items-center gap-1 text-[#141522]">
+                                <Briefcase className="h-3.5 w-3.5" />
+                                <span>{mentor.tasks} Task</span>
+                            </div>
+
+                            <div className="flex items-center gap-1">
+                                <Star className="h-3.5 w-3.5 fill-[#FFB648] text-[#FFB648]" />
+                                <span className="text-[#141522] font-medium">{mentor.rating}</span>
+                                <span className="text-[#141522]">({mentor.reviews} Reviews)</span>
+                            </div>
+                        </div>
                     </div>
                 ))}
             </div>

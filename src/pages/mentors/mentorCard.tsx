@@ -42,15 +42,18 @@ export default function MentorCard({ mentor, onToggleFollow }: MentorCardProps) 
 
             <p className="line-clamp-2 text-xs leading-relaxed text-[#8E92BC]">{mentor.bio}</p>
 
-            <div className="flex items-center gap-4 text-xs text-[#54577A]">
-                <div className="flex items-center gap-1 text-[#54577A]">
+            <div className="flex w-full items-center justify-between text-xs text-[#54577A]">
+                {/* Left Side: Tasks */}
+                <div className="flex items-center gap-1 text-[#141522]">
                     <Briefcase className="h-3.5 w-3.5" />
                     {mentor.tasks} Task
                 </div>
+
+                {/* Right Side: Rating & Reviews */}
                 <div className="flex items-center gap-1">
                     <Star className="h-3.5 w-3.5 fill-[#FFB648] text-[#FFB648]" />
                     <span className="text-[#141522]">{mentor.rating}</span>
-                    <span className="text-[#8E92BC]">({mentor.reviews} Reviews)</span>
+                    <span className="text-[#141522]">({mentor.reviews} Reviews)</span>
                 </div>
             </div>
         </article>
