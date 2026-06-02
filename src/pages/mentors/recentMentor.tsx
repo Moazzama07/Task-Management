@@ -8,7 +8,7 @@ const RECENT_MENTORS: Mentor[] = [
         id: 1,
         name: "Jessica Jane",
         role: "Web Developer",
-        bio: "Hi, I'm Jessica Jane. I am a doctoral student at Harvard University majoring in Web ...",
+        bio: "",
         tasks: 40, rating: 4.7, reviews: 750, followed: false,
         avatar: "https://i.pravatar.cc/100?img=11",
         color: "bg-purple-400", category: "Web Developer",
@@ -17,7 +17,7 @@ const RECENT_MENTORS: Mentor[] = [
         id: 2,
         name: "Abraham Lincoln",
         role: "3D Design",
-        bio: "Hi, I'm Abraham Lincoln. I am a professional 3D designer with over 10 years of experience ...",
+        bio: "",
         tasks: 32, rating: 4.9, reviews: 510, followed: true,
         avatar: "https://i.pravatar.cc/100?img=12",
         color: "bg-blue-400", category: "Frontend",
@@ -26,7 +26,7 @@ const RECENT_MENTORS: Mentor[] = [
         id: 3,
         name: "Curious George",
         role: "UI UX Design",
-        bio: "Hi, I'm Curious George. I specialize in crafting intuitive user experiences ...",
+        bio: "",
         tasks: 40, rating: 4.7, reviews: 750, followed: false,
         avatar: "https://i.pravatar.cc/100?img=13",
         color: "bg-orange-400", category: "UI/UX Design",
@@ -35,7 +35,7 @@ const RECENT_MENTORS: Mentor[] = [
         id: 4,
         name: "Alex Stanton",
         role: "UI / UX Designer",
-        bio: "Hi, I'm Alex Stanton. I am a doctoral student at Oxford University majoring in UI / UX ...",
+        bio: "",
         tasks: 60, rating: 4.9, reviews: 970, followed: true,
         avatar: "https://i.pravatar.cc/100?img=14",
         color: "bg-blue-500", category: "UI/UX Design",
@@ -44,7 +44,7 @@ const RECENT_MENTORS: Mentor[] = [
         id: 5,
         name: "Anna White",
         role: "3D Design",
-        bio: "Hi, I'm Anna White. I'm a professional 3D Designer at Blender company ...",
+        bio: "",
         tasks: 60, rating: 4.8, reviews: 870, followed: false,
         avatar: "https://i.pravatar.cc/100?img=15",
         color: "bg-green-400", category: "Frontend",
@@ -53,7 +53,7 @@ const RECENT_MENTORS: Mentor[] = [
         id: 6,
         name: "Julia Philips",
         role: "iOS Developer",
-        bio: "Hi, I'm Julia Philips. I'm a senior manager at Apple company ...",
+        bio: "",
         tasks: 60, rating: 4.9, reviews: 910, followed: false,
         avatar: "https://i.pravatar.cc/100?img=16",
         color: "bg-pink-400", category: "Backend",
@@ -109,7 +109,7 @@ export default function RecentMentors() {
         <section>
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-[#3C3C46]">Recent Mentors</h2>
+                <h2 className="text-lg font-semibold text-[#141522]">Recent Mentors</h2>
                 <div className="flex items-center gap-2">
                     <button
                         onClick={handlePrev}
