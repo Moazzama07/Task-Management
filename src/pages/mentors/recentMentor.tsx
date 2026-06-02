@@ -1,98 +1,141 @@
+import { useState, useEffect } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import MentorCard from "@/pages/mentors/mentorCard"
+import type { Mentor } from "@/pages/mentors/Mentors"
 
-const recentMentors = [
+const RECENT_MENTORS: Mentor[] = [
     {
         id: 1,
         name: "Jessica Jane",
         role: "Web Developer",
-        tasks: 40,
-        rating: 4.7,
-        reviews: 750,
-        messages: 28,
-        followed: false,
-        avatar: "JJ",
-        color: "bg-purple-400",
+        bio: "Hi, I'm Jessica Jane. I am a doctoral student at Harvard University majoring in Web ...",
+        tasks: 40, rating: 4.7, reviews: 750, followed: false,
+        avatar: "https://i.pravatar.cc/100?img=11",
+        color: "bg-purple-400", category: "Web Developer",
     },
     {
         id: 2,
         name: "Abraham Lincoln",
         role: "3D Design",
-        tasks: 32,
-        rating: 4.9,
-        reviews: 510,
-        messages: 15,
-        followed: true,
-        avatar: "AL",
-        color: "bg-blue-400",
+        bio: "Hi, I'm Abraham Lincoln. I am a professional 3D designer with over 10 years of experience ...",
+        tasks: 32, rating: 4.9, reviews: 510, followed: true,
+        avatar: "https://i.pravatar.cc/100?img=12",
+        color: "bg-blue-400", category: "Frontend",
     },
     {
         id: 3,
         name: "Curious George",
         role: "UI UX Design",
-        tasks: 40,
-        rating: 4.7,
-        reviews: 750,
-        messages: 28,
-        followed: false,
-        avatar: "CG",
-        color: "bg-orange-400",
+        bio: "Hi, I'm Curious George. I specialize in crafting intuitive user experiences ...",
+        tasks: 40, rating: 4.7, reviews: 750, followed: false,
+        avatar: "https://i.pravatar.cc/100?img=13",
+        color: "bg-orange-400", category: "UI/UX Design",
+    },
+    {
+        id: 4,
+        name: "Alex Stanton",
+        role: "UI / UX Designer",
+        bio: "Hi, I'm Alex Stanton. I am a doctoral student at Oxford University majoring in UI / UX ...",
+        tasks: 60, rating: 4.9, reviews: 970, followed: true,
+        avatar: "https://i.pravatar.cc/100?img=14",
+        color: "bg-blue-500", category: "UI/UX Design",
+    },
+    {
+        id: 5,
+        name: "Anna White",
+        role: "3D Design",
+        bio: "Hi, I'm Anna White. I'm a professional 3D Designer at Blender company ...",
+        tasks: 60, rating: 4.8, reviews: 870, followed: false,
+        avatar: "https://i.pravatar.cc/100?img=15",
+        color: "bg-green-400", category: "Frontend",
+    },
+    {
+        id: 6,
+        name: "Julia Philips",
+        role: "iOS Developer",
+        bio: "Hi, I'm Julia Philips. I'm a senior manager at Apple company ...",
+        tasks: 60, rating: 4.9, reviews: 910, followed: false,
+        avatar: "https://i.pravatar.cc/100?img=16",
+        color: "bg-pink-400", category: "Backend",
     },
 ]
 
 export default function RecentMentors() {
+    const [mentors, setMentors] = useState(RECENT_MENTORS)
+    const [startIndex, setStartIndex] = useState(0)
+    const [visibleCount, setVisibleCount] = useState(3)
+
+    useEffect(() => {
+        const updateVisibleCount = () => {
+            if (window.innerWidth < 640) setVisibleCount(1)
+            else if (window.innerWidth < 1024) setVisibleCount(2)
+            else setVisibleCount(3)
+        }
+
+        updateVisibleCount()
+        window.addEventListener("resize", updateVisibleCount)
+        return () => window.removeEventListener("resize", updateVisibleCount)
+    }, [])
+
+    useEffect(() => {
+        setStartIndex(0)
+    }, [visibleCount])
+
+    const toggleFollow = (id: number) => {
+        setMentors((prev) =>
+            prev.map((m) => m.id === id ? { ...m, followed: !m.followed } : m)
+        )
+    }
+
+    const visibleMentors = mentors.slice(startIndex, startIndex + visibleCount)
+
+    const handleNext = () => {
+        if (startIndex + visibleCount >= mentors.length) {
+            setStartIndex(0)
+        } else {
+            setStartIndex((prev) => prev + 1)
+        }
+    }
+
+    const handlePrev = () => {
+        if (startIndex === 0) {
+            setStartIndex(mentors.length - visibleCount)
+        } else {
+            setStartIndex((prev) => prev - 1)
+        }
+    }
+
     return (
-        <div className="mb-8">
+        <section>
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-[#3C3C46]">Recent Mentors</h2>
-                <div className="flex gap-2">
-                    <button className="w-7 h-7 rounded-full border border-[#E8E8ED] flex items-center justify-center hover:bg-gray-50">
-                        <ChevronLeft className="w-4 h-4 text-[#8B8B9E]" />
+                <div className="flex items-center gap-2">
+                    <button
+                        onClick={handlePrev}
+                        className="flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200 hover:bg-[#F5F5F7]"
+                    >
+                        <ChevronLeft className="h-6 w-6 text-[#141522]" />
                     </button>
-                    <button className="w-7 h-7 rounded-full border border-[#E8E8ED] flex items-center justify-center hover:bg-gray-50">
-                        <ChevronRight className="w-4 h-4 text-[#8B8B9E]" />
+                    <button
+                        onClick={handleNext}
+                        className="flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200 hover:bg-[#F5F5F7]"
+                    >
+                        <ChevronRight className="h-5 w-5 text-[#141522]" />
                     </button>
                 </div>
             </div>
 
             {/* Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {recentMentors.map((mentor) => (
-                    <div
+                {visibleMentors.map((mentor) => (
+                    <MentorCard
                         key={mentor.id}
-                        className="bg-white rounded-2xl border border-[#E8E8ED] p-4 flex flex-col gap-3 shadow-sm"
-                    >
-                        {/* Top row */}
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <div
-                                    className={`w-10 h-10 rounded-full ${mentor.color} flex items-center justify-center text-white text-sm font-semibold`}
-                                >
-                                    {mentor.avatar}
-                                </div>
-                                <div>
-                                    <p className="text-sm font-semibold text-[#3C3C46]">{mentor.name}</p>
-                                    <p className="text-xs text-[#8B8B9E]">{mentor.role}</p>
-                                </div>
-                            </div>
-                            {mentor.followed ? (
-                                <span className="text-xs text-[#8B8B9E] font-medium">Followed</span>
-                            ) : (
-                                <button className="text-xs text-[#6C63FF] font-semibold hover:underline">
-                                    + Follow
-                                </button>
-                            )}
-                        </div>
-
-                        {/* Stats */}
-                        <div className="flex items-center gap-4 text-xs text-[#8B8B9E]">
-                            <span>📋 {mentor.tasks} Task</span>
-                            <span>⭐ {mentor.rating} ({mentor.reviews} Reviews)</span>
-                            <span>💬 {mentor.messages}</span>
-                        </div>
-                    </div>
+                        mentor={mentor}
+                        onToggleFollow={toggleFollow}
+                    />
                 ))}
             </div>
-        </div>
+        </section>
     )
 }

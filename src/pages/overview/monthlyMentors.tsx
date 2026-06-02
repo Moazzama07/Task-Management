@@ -125,50 +125,43 @@ export default function MonthlyMentors() {
             </div>
 
             {/* Cards */}
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {visibleMentors.map((mentor) => (
                     <div
                         key={mentor.id}
-                        className="rounded-2xl bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 border border-black/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
+                        className="rounded-2xl bg-white flex items-center justify-between gap-3 p-4 border border-black/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
                     >
                         {/* Left */}
-                        <div className="flex min-w-0 items-center gap-3 sm:gap-4">
-                            <Avatar className="h-12 w-12 sm:h-14 sm:w-14 flex-shrink-0">
+                        <div className="flex min-w-0 items-center gap-3">
+                            <Avatar className="h-11 w-11 flex-shrink-0">
                                 <AvatarImage
                                     src={mentor.avatar}
                                     alt={mentor.name}
                                 />
-
                                 <AvatarFallback className="bg-[#EEF2FF] text-[#546FFF] font-semibold">
                                     {mentor.name[0]}
                                 </AvatarFallback>
                             </Avatar>
 
                             <div className="min-w-0">
-                                <h3 className="truncate text-sm sm:text-base lg:text-[16px] font-semibold text-[#141522]">
+                                <h3 className="truncate text-sm font-semibold text-[#141522]">
                                     {mentor.name}
                                 </h3>
 
-                                <p className="text-xs sm:text-sm text-[#9C9CA4]">
+                                <p className="text-xs text-[#9C9CA4]">
                                     {mentor.role}
                                 </p>
 
-                                <div className="mt-2 flex flex-wrap items-center gap-3 sm:gap-5 text-xs sm:text-sm">
+                                <div className="mt-1.5 flex items-center gap-3 text-xs">
                                     <div className="flex items-center gap-1 text-[#54577A]">
-                                        <Briefcase className="h-4 w-4" />
+                                        <Briefcase className="h-3.5 w-3.5" />
                                         {mentor.tasks} Task
                                     </div>
 
                                     <div className="flex items-center gap-1">
-                                        <Star className="h-4 w-4 fill-[#FFB648] text-[#FFB648]" />
-
-                                        <span className="text-[#141522]">
-                                            {mentor.rating}
-                                        </span>
-
-                                        <span className="text-[#8E92BC]">
-                                            ({mentor.reviews})
-                                        </span>
+                                        <Star className="h-3.5 w-3.5 fill-[#FFB648] text-[#FFB648]" />
+                                        <span className="text-[#141522]">{mentor.rating}</span>
+                                        <span className="text-[#8E92BC]">({mentor.reviews})</span>
                                     </div>
                                 </div>
                             </div>
