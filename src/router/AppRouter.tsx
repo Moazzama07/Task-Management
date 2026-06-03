@@ -2,12 +2,12 @@ import type { ReactNode } from "react"
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import { DashboardLayout } from "@/components/dashboardLayout"
 
-// ── Overview sub-pages (split components) ────────────────────────────────────
+//sub-pages 
 import Overview from "@/pages/overview/index"
 import Task from "@/pages/task/Task"
 import Mentors from "@/pages/mentors/Mentors"
 
-// ── simple wrapper for placeholder pages ──────────────────────────────────────
+// wrapper for placeholder pages 
 function PageWrapper({ children }: { children: ReactNode }) {
   return (
     <div className="rounded-3xl border border-[#E8E8ED] bg-white p-6 text-[#3C3C46] shadow-sm">
@@ -16,15 +16,15 @@ function PageWrapper({ children }: { children: ReactNode }) {
   )
 }
 
-// ── router ────────────────────────────────────────────────────────────────────
+// router 
 export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Default → /overview */}
+
         <Route path="/" element={<Navigate to="/overview" replace />} />
 
-        {/* ── Overview: Greeting + Running Task + Activity + Mentors + Upcoming + Sidebar ── */}
+
         <Route
           path="/overview"
           element={
@@ -34,7 +34,7 @@ export default function AppRouter() {
           }
         />
 
-        {/* ── Task ── */}
+        {/* Task */}
         <Route
           path="/task"
           element={
@@ -44,7 +44,7 @@ export default function AppRouter() {
           }
         />
 
-        {/* ── Mentors ── */}
+        {/* Mentors */}
         <Route
           path="/mentors"
           element={
@@ -54,7 +54,7 @@ export default function AppRouter() {
           }
         />
 
-        {/* ── Message ── */}
+        {/* Message */}
         <Route
           path="/message"
           element={
@@ -66,7 +66,7 @@ export default function AppRouter() {
           }
         />
 
-        {/* ── Settings ── */}
+        {/* Settings */}
         <Route
           path="/settings"
           element={

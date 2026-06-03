@@ -107,7 +107,7 @@ export default function MonthlyMentors() {
                         onClick={handleNext}
                         className="flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200 hover:bg-[#F5F5F7]"
                     >
-                        <ChevronRight className="h-5 w-5 text-[#141522]" />
+                        <ChevronRight className="h-6 w-6 text-[#141522]" />
                     </button>
                 </div>
             </div>
@@ -144,7 +144,7 @@ export default function MonthlyMentors() {
                                 className={`rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition-colors duration-200 cursor-pointer whitespace-nowrap
                                     ${mentor.following
                                         ? "bg-[#EEF2FF] text-[#54577A]"
-                                        : "text-[#546FFF] bg-transparent border border-[#546FFF]/20"
+                                        : "text-[#546FFF]"
                                     }`}
                             >
                                 {mentor.following ? "Followed" : "+ Follow"}

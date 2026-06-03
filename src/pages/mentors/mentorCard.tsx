@@ -33,7 +33,7 @@ export default function MentorCard({ mentor, onToggleFollow }: MentorCardProps) 
                     className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-colors duration-200 cursor-pointer
                         ${mentor.followed
                             ? "bg-[#EEF2FF] text-[#54577A]"
-                            : "text-[#546FFF] bg-transparent border border-[#546FFF]/20"
+                            : "text-[#546FFF]"
                         }`}
                 >
                     {mentor.followed ? "Followed" : "+ Follow"}

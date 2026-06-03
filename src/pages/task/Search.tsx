@@ -47,7 +47,7 @@ export default function SearchBar({
     return (
         <div className="flex items-center gap-3 w-full ">
 
-            {/* ── Search Input — fixed width, icon on RIGHT ── */}
+            {/* ── Search Input*/}
             <div className="relative w-80 sm:w-96">
                 <input
                     type="text"

@@ -86,7 +86,7 @@ export default function UpcomingTask() {
                         className="flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200 hover:bg-[#F5F5F7] disabled:cursor-not-allowed disabled:opacity-40"
                         disabled={startIndex >= upcomingTasks.length - 2}
                     >
-                        <ChevronRight className="h-5 w-5 text-[#141522]" />
+                        <ChevronRight className="h-6 w-6 text-[#141522]" />
                     </button>
                 </div>
             </div>
