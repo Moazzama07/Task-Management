@@ -2,12 +2,13 @@ import type { ReactNode } from "react"
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import { DashboardLayout } from "@/components/dashboardLayout"
 
-//sub-pages 
+// sub-pages
 import Overview from "@/pages/overview/index"
 import Task from "@/pages/task/Task"
 import Mentors from "@/pages/mentors/Mentors"
+import Settings from "@/pages/settings/index"
 
-// wrapper for placeholder pages 
+// wrapper for placeholder pages
 function PageWrapper({ children }: { children: ReactNode }) {
   return (
     <div className="rounded-3xl border border-[#E8E8ED] bg-white p-6 text-[#3C3C46] shadow-sm">
@@ -16,7 +17,7 @@ function PageWrapper({ children }: { children: ReactNode }) {
   )
 }
 
-// router 
+// router
 export default function AppRouter() {
   return (
     <BrowserRouter>
@@ -24,7 +25,7 @@ export default function AppRouter() {
 
         <Route path="/" element={<Navigate to="/overview" replace />} />
 
-
+        {/* Overview */}
         <Route
           path="/overview"
           element={
@@ -71,15 +72,14 @@ export default function AppRouter() {
           path="/settings"
           element={
             <DashboardLayout title="Settings">
-              <PageWrapper>
-                Update your preferences and account settings here.
-              </PageWrapper>
+              <Settings />
             </DashboardLayout>
           }
         />
 
         {/* 404 fallback */}
         <Route path="*" element={<Navigate to="/overview" replace />} />
+
       </Routes>
     </BrowserRouter>
   )
