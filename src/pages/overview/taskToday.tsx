@@ -1,5 +1,6 @@
 import { Clock, ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import taskImage from "@/assets/Image.svg"
 
 // ── Mini Calendar ─────────────────────────────────────────────
 const CAL_ROWS = [
@@ -52,7 +53,7 @@ const DETAIL_TASKS = [
 
 export default function TaskToday() {
     return (
-        <div className="rounded-2xl bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] overflow-hidden">
+        <div className="rounded-2xl bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] overflow-hidden flex flex-col flex-1">
             {/* Header */}
             <div className="flex items-center justify-between px-4 pt-4 pb-2">
                 <p className="text-sm font-semibold text-[#1A1A2E]">Task Today</p>
@@ -63,9 +64,9 @@ export default function TaskToday() {
 
             {/* Image */}
             <img
-                src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&q=80"
+                src={taskImage}
                 alt="task"
-                className="w-full h-24 object-cover"
+                className="w-full h-48 rounded-lg object-cover"
             />
 
             {/* Body */}
@@ -104,22 +105,24 @@ export default function TaskToday() {
                 </div>
             </div>
 
-            {/* Detail Task */}
-            <div className="border-t border-[#F0F0F5] px-4 py-3">
-                <div className="flex items-center justify-between mb-2.5">
-                    <p className="text-xs font-semibold text-[#1A1A2E]">Detail Task</p>
-                    <p className="text-[10px] text-[#4F6EF7]">UI/UX Designer</p>
+            {/* Detail Task — flex-1 + justify-between pins button to bottom */}
+            <div className="border-t border-[#F0F0F5] px-4 py-3 flex flex-col flex-1 justify-between">
+                <div>
+                    <div className="flex items-center justify-between mb-2.5">
+                        <p className="text-xs font-semibold text-[#1A1A2E]">Detail Task</p>
+                        <p className="text-[10px] text-[#4F6EF7]">UI/UX Designer</p>
+                    </div>
+                    <ol className="space-y-2">
+                        {DETAIL_TASKS.map((t, i) => (
+                            <li key={i} className="flex items-start gap-2 text-xs text-[#9999A8]">
+                                <span className="w-4 h-4 rounded-full bg-[#EEF1FE] text-[#4F6EF7] text-[9px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                                    {i + 1}
+                                </span>
+                                <span className="leading-tight">{t}</span>
+                            </li>
+                        ))}
+                    </ol>
                 </div>
-                <ol className="space-y-2">
-                    {DETAIL_TASKS.map((t, i) => (
-                        <li key={i} className="flex items-start gap-2 text-xs text-[#9999A8]">
-                            <span className="w-4 h-4 rounded-full bg-[#EEF1FE] text-[#4F6EF7] text-[9px] font-bold flex items-center justify-center shrink-0 mt-0.5">
-                                {i + 1}
-                            </span>
-                            <span className="leading-tight">{t}</span>
-                        </li>
-                    ))}
-                </ol>
                 <button className="mt-3 w-full bg-[#4F6EF7] hover:bg-[#3A57E8] active:bg-[#2F49D0] text-white text-xs font-semibold py-2.5 rounded-xl transition-colors">
                     Go To Detail
                 </button>

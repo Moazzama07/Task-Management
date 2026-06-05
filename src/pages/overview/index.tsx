@@ -88,17 +88,14 @@ function SparkLine() {
             onMouseLeave={handleMouseLeave}
         >
             <defs>
-                {/* Slim line tracking gradient overlay (Black accents) */}
                 <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="#1A1A2E" stopOpacity="0.08" />
                     <stop offset="100%" stopColor="#1A1A2E" stopOpacity="0" />
                 </linearGradient>
             </defs>
 
-            {/* Gradient Area Fill */}
             <path d={area} fill="url(#sg)" className="transition-all duration-300 ease-out" />
 
-            {/* Main Slim Black Sparkline Path */}
             <path
                 d={d}
                 fill="none"
@@ -109,11 +106,9 @@ function SparkLine() {
                 className="transition-all duration-300 ease-out"
             />
 
-            {/* Active Core Nodes scaled down to match the slim black layout */}
             <circle cx={activeX} cy={activeY} r="7" fill="#1A1A2E" fillOpacity="0.1" className="transition-all duration-200 ease-out" />
             <circle cx={activeX} cy={activeY} r="3.5" fill="#1A1A2E" stroke="white" strokeWidth="1.5" className="transition-all duration-200 ease-out" />
 
-            {/* Tooltip Wrapper */}
             <g className="transition-all duration-200 ease-out">
                 <rect
                     x={tooltipX}
@@ -150,6 +145,7 @@ function SparkLine() {
 export default function Overview() {
     return (
         <div className="flex flex-col lg:flex-row gap-5 items-start">
+            {/* ── Left column ── */}
             <div className="flex-1 min-w-0 space-y-5">
                 <div className="rounded-2xl bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] px-6 py-5">
                     <p className="text-[10px] text-[#9999A8] font-semibold uppercase tracking-widest mb-1">Welcome Back</p>
@@ -206,7 +202,8 @@ export default function Overview() {
                 <UpccomingTask />
             </div>
 
-            <div className="w-full lg:w-[260px] xl:w-[280px] shrink-0 space-y-4">
+            {/* ── Right sidebar — flex-col so TaskToday can grow with flex-1 ── */}
+            <div className="w-full lg:w-[260px] xl:w-[280px] shrink-0 flex flex-col gap-4 self-stretch">
                 <MiniCalendar />
                 <TaskToday />
             </div>
