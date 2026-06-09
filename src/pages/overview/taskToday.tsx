@@ -2,7 +2,7 @@ import { Clock, ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import taskImage from "@/assets/Image.svg"
 
-// ── Mini Calendar ─────────────────────────────────────────────
+// Mini Calendar 
 const CAL_ROWS = [
     [null, null, null, null, null, null, 1],
     [2, 3, 4, 5, 6, 7, 8],
@@ -12,7 +12,7 @@ const CAL_ROWS = [
 
 export function MiniCalendar() {
     return (
-        <div className="rounded-2xl bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] p-4">
+        <div className="rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.06)] p-4">
             <div className="flex items-center justify-between mb-3">
                 <button className="w-6 h-6 flex items-center justify-center text-[#C5C5D0] hover:text-[#1A1A2E] transition-colors">
                     <ChevronLeft className="h-3.5 w-3.5" />
@@ -44,7 +44,7 @@ export function MiniCalendar() {
     )
 }
 
-// ── Task Today ────────────────────────────────────────────────
+// Task Today 
 const DETAIL_TASKS = [
     "Understanding the tools in Figma",
     "Understand the basics of making designs",
@@ -70,30 +70,36 @@ export default function TaskToday() {
             />
 
             {/* Body */}
-            <div className="p-4 space-y-2">
-                <p className="text-[10px] font-semibold text-[#4F6EF7] uppercase tracking-wide">
-                    UI/UX Designer
-                </p>
-                <p className="text-sm font-bold text-[#1A1A2E] leading-snug">
+            <div className="p-4">
+                <p className="text-[16px] font-bold text-[#1A1A2E] leading-snug">
                     Creating Awesome Mobile Apps
                 </p>
 
+                <p className="mt-2 text-[12px] font-semibold text-[#9C9CA4] uppercase tracking-wide">
+                    UI/UX Designer
+                </p>
+
                 {/* Progress */}
-                <div className="flex items-center justify-between text-xs text-[#9999A8]">
-                    <div className="flex items-center gap-1.5">
-                        <div className="w-2 h-2 rounded-full bg-[#4F6EF7]" />
-                        <span>Progress</span>
+                <div className="mt-6">
+                    <div className="flex items-center justify-between text-[14px]">
+                        <div className="flex items-center gap-1.5">
+                            <span className="font-medium text-[#141522]">Progress</span>
+                        </div>
+                        <span className="text-[#4F6EF7] font-semibold">90%</span>
                     </div>
-                    <span className="text-[#4F6EF7] font-semibold">90%</span>
-                </div>
-                <div className="w-full bg-[#EEF1FE] rounded-full h-1.5">
-                    <div className="bg-[#4F6EF7] h-1.5 rounded-full" style={{ width: "90%" }} />
+
+                    <div className="w-full bg-[#EEF1FE] rounded-full h-1.5 mt-2">
+                        <div
+                            className="bg-[#4F6EF7] h-1.5 rounded-full"
+                            style={{ width: "90%" }}
+                        />
+                    </div>
                 </div>
 
                 {/* Time + Avatars */}
-                <div className="flex items-center gap-1 text-xs text-[#9999A8]">
-                    <Clock className="h-3 w-3" />
-                    <span>1 Hour</span>
+                <div className="flex items-center gap-1 text-xs mt-4 ">
+                    <Clock className="h-3 w-3 text-[#141522]" />
+                    <span className="text-[#141522]">1 Hour</span>
                     <div className="ml-auto flex -space-x-1.5">
                         {[1, 2, 3, 4, 5].map((i) => (
                             <Avatar key={i} className="h-5 w-5 border-2 border-white">
@@ -105,25 +111,25 @@ export default function TaskToday() {
                 </div>
             </div>
 
-            {/* Detail Task — flex-1 + justify-between pins button to bottom */}
+
             <div className="border-t border-[#F0F0F5] px-4 py-3 flex flex-col flex-1 justify-between">
                 <div>
-                    <div className="flex items-center justify-between mb-2.5">
-                        <p className="text-xs font-semibold text-[#1A1A2E]">Detail Task</p>
-                        <p className="text-[10px] text-[#4F6EF7]">UI/UX Designer</p>
+                    <div className="flex items-center justify-between mb-2.5 mt-10 ">
+                        <p className="text-[14px] font-semibold text-[#1A1A2E]">Detail Task</p>
+                        <p className="text-[10px] text-[#54577A] font-medium">UI/UX Designer</p>
                     </div>
                     <ol className="space-y-2">
                         {DETAIL_TASKS.map((t, i) => (
-                            <li key={i} className="flex items-start gap-2 text-xs text-[#9999A8]">
-                                <span className="w-4 h-4 rounded-full bg-[#EEF1FE] text-[#4F6EF7] text-[9px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                            <li key={i} className="flex items-start gap-2 text-[13px] text-[#141522]">
+                                <span className="w-6 h-6  bg-[#EEF1FE] text-[10px] font-bold flex items-center justify-center shrink-0 mt-6 ">
                                     {i + 1}
                                 </span>
-                                <span className="leading-tight">{t}</span>
+                                <span className="leading-tight mt-6  ">{t}</span>
                             </li>
                         ))}
                     </ol>
                 </div>
-                <button className="mt-3 w-full bg-[#4F6EF7] hover:bg-[#3A57E8] active:bg-[#2F49D0] text-white text-xs font-semibold py-2.5 rounded-xl transition-colors">
+                <button className="mt-2 w-full bg-[#4F6EF7] hover:bg-[#3A57E8] active:bg-[#2F49D0] text-white text-xs font-semibold py-2.5 rounded-xl transition-colors">
                     Go To Detail
                 </button>
             </div>

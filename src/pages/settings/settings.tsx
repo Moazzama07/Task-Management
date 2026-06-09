@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react"
 import { CheckCircle2, AlertTriangle, X } from "lucide-react"
 
-// ── Types ──────────────────────────────────────────────────────────────────
+// Types 
 type Tab = "general" | "notification"
 
 interface GeneralState {
@@ -16,7 +16,7 @@ interface NotificationItem {
     enabled: boolean
 }
 
-// ── Saved (committed) defaults ─────────────────────────────────────────────
+// Saved 
 const GENERAL_DEFAULTS: GeneralState = {
     language: "English (Default)",
     timezone: "Asia/Karachi",
@@ -30,7 +30,7 @@ const NOTIFICATION_DEFAULTS: NotificationItem[] = [
     { id: "mentor-help", label: "Mentor Help", enabled: false },
 ]
 
-// ── Toast ──────────────────────────────────────────────────────────────────
+//  Toast 
 function Toast({ message, onClose }: { message: string; onClose: () => void }) {
     useEffect(() => {
         const t = setTimeout(onClose, 3000)
@@ -48,7 +48,7 @@ function Toast({ message, onClose }: { message: string; onClose: () => void }) {
     )
 }
 
-// ── Unsaved Warning Banner ─────────────────────────────────────────────────
+// Unsaved Warning Banner
 function UnsavedBanner({ onDiscard }: { onDiscard: () => void }) {
     return (
         <div className="flex items-center justify-between gap-3 rounded-xl bg-[#FFF8EC] border border-[#FDE9A2] px-4 py-3 mb-5">
@@ -68,7 +68,7 @@ function UnsavedBanner({ onDiscard }: { onDiscard: () => void }) {
     )
 }
 
-// ── SelectField ────────────────────────────────────────────────────────────
+// SelectField 
 function SelectField({
     label,
     value,
@@ -109,7 +109,7 @@ function SelectField({
     )
 }
 
-// ── TimeFormatToggle ───────────────────────────────────────────────────────
+//  TimeFormatToggle
 function TimeFormatToggle({
     value,
     onChange,
@@ -138,7 +138,7 @@ function TimeFormatToggle({
     )
 }
 
-// ── GeneralSettings ────────────────────────────────────────────────────────
+//  GeneralSettings
 function GeneralSettings({
     form,
     onChange,
@@ -176,7 +176,7 @@ function GeneralSettings({
     )
 }
 
-// ── Toggle ─────────────────────────────────────────────────────────────────
+//  Toggle 
 function Toggle({ enabled, onToggle }: { enabled: boolean; onToggle: () => void }) {
     return (
         <button
@@ -192,7 +192,7 @@ function Toggle({ enabled, onToggle }: { enabled: boolean; onToggle: () => void 
     )
 }
 
-// ── NotificationSettings ───────────────────────────────────────────────────
+//  NotificationSettings 
 function NotificationSettings({
     items,
     onToggle,
@@ -221,7 +221,7 @@ function NotificationSettings({
     )
 }
 
-// ── helpers ────────────────────────────────────────────────────────────────
+//  helpers
 function generalChanged(a: GeneralState, b: GeneralState) {
     return a.language !== b.language || a.timezone !== b.timezone || a.timeFormat !== b.timeFormat
 }
@@ -230,7 +230,7 @@ function notifChanged(a: NotificationItem[], b: NotificationItem[]) {
     return a.some((item, i) => item.enabled !== b[i].enabled)
 }
 
-// ── Main Settings ──────────────────────────────────────────────────────────
+//  Main Settings 
 export default function Settings() {
     const [activeTab, setActiveTab] = useState<Tab>("general")
 
