@@ -63,12 +63,13 @@ export default function TaskToday() {
             </div>
 
             {/* Image */}
-            <img
-                src={taskImage}
-                alt="task"
-                className="w-full h-48 rounded-lg object-cover"
-            />
-
+           <div className="px-4 w-full">
+                <img
+                    src={taskImage}
+                    alt="task"
+                    className="w-full h-48 rounded-xl object-cover"
+                />
+            </div>
             {/* Body */}
             <div className="p-4">
                 <p className="text-[16px] font-bold text-[#1A1A2E] leading-snug">

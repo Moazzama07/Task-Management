@@ -1,231 +1,219 @@
 import { useState, useRef, MouseEvent } from "react"
+import { ChevronDown } from "lucide-react"
 import MonthlyMentors from "./monthlyMentors"
 import UpccomingTask from "./upccomingTask"
 import TaskToday, { MiniCalendar } from "./taskToday"
-import { ChevronDown } from "lucide-react"
 
-const initialPoints = [0.4, 1.1, 0.3, 2.0, 0.2, 1.4, 0.1]
-const dayLabels = ["S", "M", "T", "W", "T", "F", "S"]
+// Constants
+
+const CHART = { w: 600, h: 120, padX: 20, padY: 16, max: 4 } as const
+const DAY_LABELS = ["S", "M", "T", "W", "T", "F", "S"] as const
+const DATA_POINTS = [0.4, 1.1, 0.3, 2.0, 0.2, 1.4, 0.1] as const
+const DEFAULT_ACTIVE = 3
+
+// Helpers 
+
+function buildCurvePath(xs: number[], ys: number[]): string {
+    if (xs.length < 2) return ""
+    let d = `M ${xs[0]} ${ys[0]}`
+    for (let i = 1; i < xs.length; i++) {
+        const cpx = (xs[i - 1] + xs[i]) / 2
+        d += ` C ${cpx} ${ys[i - 1]}, ${cpx} ${ys[i]}, ${xs[i]} ${ys[i]}`
+    }
+    return d
+}
+
+function toY(value: number): number {
+    const { h, padY, max } = CHART
+    return h - padY - (value / max) * (h - padY * 2)
+}
+
+function toX(index: number, total: number): number {
+    const { w, padX } = CHART
+    return padX + (index * (w - padX * 2)) / (total - 1)
+}
+
+// SparkLine 
 
 function SparkLine() {
-    const w = 600
-    const h = 120
-    const padX = 20
-    const padY = 16
-
     const svgRef = useRef<SVGSVGElement>(null)
+    const [activeIndex, setActiveIndex] = useState(DEFAULT_ACTIVE)
+    const [isHovered, setIsHovered] = useState(false)
 
-    const [points, setPoints] = useState<number[]>(initialPoints)
-    const [activeIndex, setActiveIndex] = useState<number>(3)
-    const [isHovered, setIsHovered] = useState<boolean>(false)
+    const xs = DATA_POINTS.map((_, i) => toX(i, DATA_POINTS.length))
+    const ys = DATA_POINTS.map((v) => toY(v))
 
-    const currentPoints = isHovered ? points : initialPoints
-    const currentActiveIndex = isHovered ? activeIndex : 3
+    const curvePath = buildCurvePath(xs, ys)
+    const firstX = xs[0]
+    const lastX = xs[xs.length - 1]
+    const areaPath = `${curvePath} L ${lastX} ${CHART.h} L ${firstX} ${CHART.h} Z`
 
-    const max = 4
+    const activeIdx = isHovered ? activeIndex : DEFAULT_ACTIVE
+    const dotX = xs[activeIdx]
+    const dotY = ys[activeIdx]
+    const taskCount = Math.round(DATA_POINTS[activeIdx])
 
-    const xs = currentPoints.map(
-        (_, i) => padX + (i * (w - padX * 2)) / (currentPoints.length - 1)
-    )
+    function getNearestIndex(clientX: number, svgRect: DOMRect): number {
+        const svgX = ((clientX - svgRect.left) / svgRect.width) * CHART.w
+        return xs.reduce(
+            (nearest, x, i) =>
+                Math.abs(svgX - x) < Math.abs(svgX - xs[nearest]) ? i : nearest,
+            0
+        )
+    }
 
-    const ys = currentPoints.map(
-        (v) => h - padY - (v / max) * (h - padY * 2)
-    )
-
-    const d = xs
-        .map((x, i) => `${i === 0 ? "M" : "L"} ${x} ${ys[i]}`)
-        .join(" ")
-
-    const area = `
-        ${d}
-        L ${xs[xs.length - 1]} ${h}
-        L ${xs[0]} ${h}
-        Z
-    `
-
-    const handleSvgInteraction = (e: MouseEvent<SVGSVGElement>) => {
+    function handleMouseMove(e: MouseEvent<SVGSVGElement>) {
         if (!svgRef.current) return
-
         setIsHovered(true)
-
-        const rect = svgRef.current.getBoundingClientRect()
-        const clickX = ((e.clientX - rect.left) / rect.width) * w
-        const clickY = ((e.clientY - rect.top) / rect.height) * h
-
-        let closestIndex = 0
-
-        xs.forEach((x, i) => {
-            if (
-                Math.abs(clickX - x) <
-                Math.abs(clickX - xs[closestIndex])
-            ) {
-                closestIndex = i
-            }
-        })
-
-        if (e.type === "click") {
-            const value =
-                ((h - padY - clickY) / (h - padY * 2)) * max
-
-            const updated = [...points]
-            updated[closestIndex] = Number(
-                Math.max(0.5, Math.min(max, value)).toFixed(1)
-            )
-
-            setPoints(updated)
-        }
-
-        setActiveIndex(closestIndex)
+        setActiveIndex(getNearestIndex(e.clientX, svgRef.current.getBoundingClientRect()))
     }
 
-    const handleMouseLeave = () => {
+    function handleMouseLeave() {
         setIsHovered(false)
-        setPoints(initialPoints)
+        setActiveIndex(DEFAULT_ACTIVE)
     }
-
-    const activeX = xs[currentActiveIndex]
-    const activeY = ys[currentActiveIndex]
-
-    const activeTasks =
-        Math.round(currentPoints[currentActiveIndex]) || 2
 
     return (
         <svg
             ref={svgRef}
-            viewBox={`0 0 ${w} ${h}`}
-            className="w-full h-full cursor-pointer"
+            viewBox={`0 0 ${CHART.w} ${CHART.h}`}
+            className="w-full h-full cursor-default"
             preserveAspectRatio="none"
-            onMouseMove={handleSvgInteraction}
-            onClick={handleSvgInteraction}
+            onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
         >
             <defs>
-                <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
-                    <stop
-                        offset="0%"
-                        stopColor="#1A1A2E"
-                        stopOpacity="0.08"
-                    />
-                    <stop
-                        offset="100%"
-                        stopColor="#1A1A2E"
-                        stopOpacity="0"
-                    />
+                <linearGradient id="sparkline-gradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#1A1A2E" stopOpacity="0.08" />
+                    <stop offset="100%" stopColor="#1A1A2E" stopOpacity="0" />
                 </linearGradient>
             </defs>
 
-            <path d={area} fill="url(#sg)" />
+            {/* Area fill */}
+            <path d={areaPath} fill="url(#sparkline-gradient)" />
 
+            {/* Curve line */}
             <path
-                d={d}
+                d={curvePath}
                 fill="none"
                 stroke="#1A1A2E"
-                strokeWidth="2"
+                strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
 
-            <circle
-                cx={activeX}
-                cy={activeY}
-                r="10"
-                fill="#1A1A2E"
-                fillOpacity="0.12"
-            />
+            {/* Active dot */}
 
-            <circle
-                cx={activeX}
-                cy={activeY}
-                r="5"
-                fill="#1A1A2E"
-                stroke="white"
-                strokeWidth="2"
-            />
+            <circle cx={dotX} cy={dotY} r="10" fill="#546FFF" />
+            <circle cx={dotX} cy={dotY} r="5" fill="#FFFFFF" />
 
             {/* Tooltip */}
-            <g>
-                <rect
-                    x={activeX - 45}
-                    y={activeY - 48}
-                    width="90"
-                    height="32"
-                    rx="10"
-                    fill="#1A1A2E" />
+            <rect
+                x={dotX - 35}
+                y={dotY - 58}
+                width="70"
+                height="38"
+                rx="10"
+                fill="#1A1A2E"
+            />
 
-                <polygon
-                    points={`
-                        ${activeX - 6},${activeY - 16}
-                        ${activeX + 6},${activeY - 16}
-                        ${activeX},${activeY - 9}
-                    `}
-                    fill="#1A1A2E"
-                />
+            <polygon
+                points={`${dotX - 6},${dotY - 20}
+           ${dotX + 6},${dotY - 20}
+           ${dotX},${dotY - 12}`}
+                fill="#1A1A2E"
+            />
 
-                <text
-                    x={activeX}
-                    y={activeY - 27}
-                    textAnchor="middle"
-                    fill="white"
-                    fontSize="12"
-                    fontWeight="600"
-                >
-                    {activeTasks} Tasks
-                </text>
-            </g>
+            <text
+                x={dotX}
+                y={dotY - 35}
+                textAnchor="middle"
+                fill="#FFFFFF"
+                fontSize="13"
+                fontWeight="600"
+            >
+                {taskCount} Task
+            </text>
         </svg>
     )
 }
 
+// ActivityCard 
+
+function ActivityCard() {
+    return (
+        <div
+            className="rounded-2xl bg-[#F5F5F7] shadow-[0_2px_12px_rgba(0,0,0,0.06)] p-5 flex flex-col gap-2"
+            style={{ height: 214 }}
+        >
+            <div className="flex items-center justify-between" style={{ flexShrink: 0 }}>
+                <p className="text-sm font-semibold text-[#1A1A2E]">Activity</p>
+                <span className="flex items-center gap-1 text-[12px] font-medium cursor-pointer px-3 py-1 rounded-lg select-none">
+                    This Week
+                    <ChevronDown className="w-3.5 h-3.5" />
+                </span>
+            </div>
+
+            <div
+                className="rounded-xl bg-white flex flex-col pt-3 pb-2 px-2"
+                style={{ flex: 1, minHeight: 0, overflow: "hidden" }}
+            >
+                <div className="flex gap-1" style={{ flex: 1, minHeight: 0 }}>
+                    <div
+                        className="flex flex-col justify-between text-[9px] text-[#888] pr-1 py-0.5"
+                        style={{ flexShrink: 0 }}
+                    >
+                        <span>3</span>
+                        <span>2</span>
+                        <span>1</span>
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0, height: "100%" }}>
+                        <SparkLine />
+                    </div>
+                </div>
+
+                <div
+                    className="flex justify-between text-[9px] text-[#141522] pl-5 pr-1 mt-1"
+                    style={{ flexShrink: 0 }}
+                >
+                    {DAY_LABELS.map((label, i) => (
+                        <span key={i}>{label}</span>
+                    ))}
+                </div>
+            </div>
+        </div>
+    )
+}
+
+// WelcomeBanner 
+
+function WelcomeBanner() {
+    return (
+        <div className="rounded-2xl bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] px-6 py-5">
+            <p className="text-[10px] text-[#9999A8] font-semibold uppercase tracking-widest mb-1">
+                Welcome Back
+            </p>
+            <h2 className="text-xl font-bold text-[#1A1A2E]">Hi, Skylar Dias 👋</h2>
+            <p className="text-xs text-[#9999A8] mt-0.5">Let's finish your task today!</p>
+        </div>
+    )
+}
+
+// Overview 
+
 export default function Overview() {
     return (
         <div className="flex flex-col lg:flex-row gap-5 items-start">
-            {/* ── Left column ── */}
+            {/* Left column */}
             <div className="flex-1 min-w-0 space-y-5">
-                <div className="rounded-2xl bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] px-6 py-5">
-                    <p className="text-[10px] text-[#9999A8] font-semibold uppercase tracking-widest mb-1">Welcome Back</p>
-                    <h2 className="text-xl font-bold text-[#1A1A2E]">Hi, Skylar Dias 👋</h2>
-                    <p className="text-xs text-[#9999A8] mt-0.5">Let's finish your task today!</p>
-                </div>
-
-                {/* Activity */}
-                <div className="rounded-2xl bg-[#F5F5F7] shadow-[0_2px_12px_rgba(0,0,0,0.06)] p-5 flex flex-col gap-2" style={{ height: "214px" }}>
-
-                    {/* Header */}
-                    <div className="flex items-center justify-between" style={{ flexShrink: 0 }}>
-                        <p className="text-sm font-semibold text-[#1A1A2E]">Activity</p>
-                        <span className="text-[12px] font-medium cursor-pointer px-3 py-1 rounded-lg select-none flex items-center gap-1">
-                            This Week
-                            <ChevronDown className="w-3.5 h-3.5" />
-                        </span>
-                    </div>
-
-                    {/* Chart box — day labels bhi andar */}
-                    <div className="rounded-xl bg-white flex flex-col pt-3 pb-2 px-2" style={{ flex: 1, minHeight: 0, overflow: "hidden" }}>
-
-                        {/* Chart row: y-axis + sparkline */}
-                        <div className="flex gap-1" style={{ flex: 1, minHeight: 0 }}>
-                            <div className="flex flex-col justify-between text-[9px] text-[#14152] pr-1 py-0.5" style={{ flexShrink: 0 }}>
-                                <span>3</span><span>2</span><span>1</span>
-                            </div>
-                            <div style={{ flex: 1, minWidth: 0, height: "100%" }}>
-                                <SparkLine />
-                            </div>
-                        </div>
-
-                        {/* Day labels inside white box */}
-                        <div className="flex justify-between text-[9px] text-[#141522] pl-5 pr-1 mt-1" style={{ flexShrink: 0 }}>
-                            {dayLabels.map((d, i) => <span key={i}>{d}</span>)}
-                        </div>
-
-                    </div>
-                </div>
-
+                <WelcomeBanner />
+                <ActivityCard />
                 <MonthlyMentors />
                 <UpccomingTask />
             </div>
 
-            {/* ── Right sidebar — flex-col so TaskToday can grow with flex-1 ── */}
-            <div className="w-full lg:w-[340px] xl:w-[340px] lg:h-[1000px] shrink-0 flex flex-col gap-4 self-stretch">
+            {/* Right sidebar */}
+            <div className="w-full lg:w-[340px] shrink-0 flex flex-col gap-4 self-stretch lg:h-[1000px]">
                 <MiniCalendar />
                 <TaskToday />
             </div>
