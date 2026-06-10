@@ -189,12 +189,9 @@ function ActivityCard() {
 
 function WelcomeBanner() {
     return (
-        <div className="rounded-2xl bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] px-6 py-5">
-            <p className="text-[10px] text-[#9999A8] font-semibold uppercase tracking-widest mb-1">
-                Welcome Back
-            </p>
-            <h2 className="text-xl font-bold text-[#1A1A2E]">Hi, Skylar Dias 👋</h2>
-            <p className="text-xs text-[#9999A8] mt-0.5">Let's finish your task today!</p>
+        <div className="rounded-2xl bg-gray-900 shadow-[0_2px_12px_rgba(0,0,0,0.06)] px-6 py-5">
+            <h2 className="text-[24px] font-semibold text-white">Hi, Skylar Dias </h2>
+            <p className="text-[14px] text-white/80 mt-0.5">Let's finish your task today!</p>
         </div>
     )
 }
