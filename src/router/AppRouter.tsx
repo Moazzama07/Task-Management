@@ -1,31 +1,19 @@
-import type { ReactNode } from "react"
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import { DashboardLayout } from "@/components/dashboardLayout"
 
-// sub-pages
+// pages
 import Overview from "@/pages/overview/index"
 import Task from "@/pages/task/Task"
 import Mentors from "@/pages/mentors/Mentors"
+import Messages from "@/pages/messages/index"
 import Settings from "@/pages/settings/index"
 
-// wrapper for placeholder pages
-function PageWrapper({ children }: { children: ReactNode }) {
-  return (
-    <div className="rounded-3xl border border-[#E8E8ED] bg-white p-6 text-[#3C3C46] shadow-sm">
-      {children}
-    </div>
-  )
-}
-
-// router
 export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-
         <Route path="/" element={<Navigate to="/overview" replace />} />
 
-        {/* Overview */}
         <Route
           path="/overview"
           element={
@@ -35,7 +23,6 @@ export default function AppRouter() {
           }
         />
 
-        {/* Task */}
         <Route
           path="/task"
           element={
@@ -45,7 +32,6 @@ export default function AppRouter() {
           }
         />
 
-        {/* Mentors */}
         <Route
           path="/mentors"
           element={
@@ -55,19 +41,15 @@ export default function AppRouter() {
           }
         />
 
-        {/* Message */}
         <Route
           path="/message"
           element={
             <DashboardLayout title="Message">
-              <PageWrapper>
-                View your messages and notifications in one place.
-              </PageWrapper>
+              <Messages />
             </DashboardLayout>
           }
         />
 
-        {/* Settings */}
         <Route
           path="/settings"
           element={
@@ -77,9 +59,7 @@ export default function AppRouter() {
           }
         />
 
-        {/* 404 fallback */}
         <Route path="*" element={<Navigate to="/overview" replace />} />
-
       </Routes>
     </BrowserRouter>
   )
