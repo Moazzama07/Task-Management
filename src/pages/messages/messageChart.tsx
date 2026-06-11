@@ -249,7 +249,7 @@ export default function MessageChat({
                     <button
                         onClick={onSend}
                         disabled={false}
-                        className="w-8 h-8 bg-[#546FFF] rounded-xl flex items-center justify-center text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0"
+                        className="hidden md:flex w-8 h-8 bg-[#546FFF] rounded-xl items-center justify-center text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0"
                         aria-label="Send message"
                     >
                         <Send size={12} />
