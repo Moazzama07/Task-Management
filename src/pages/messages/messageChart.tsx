@@ -6,9 +6,12 @@ import taskImage from "@/assets/Image.svg"
 import type { Contact, ChatMessage } from "./messageData"
 
 // Feature overlays
-import { VoiceCallOverlay, useVoiceCall } from "./Usevoicecall"
-import { VideoCallOverlay, useVideoCall } from "./Usevideocall"
-import { useImageSend, HiddenFileInput, ImagePreviewModal, AttachButton } from "./Useimagesend"
+import { VoiceCallOverlay } from "./Usevoicecall"
+import { VideoCallOverlay } from "./Usevideocall"
+import { useVideoCall } from "./hooks/useVideoCall"
+import { HiddenFileInput, ImagePreviewModal, AttachButton } from "./Useimagesend"
+import { useVoiceCall } from "./hooks/useVoiceCall"
+import { useImageSend } from "./hooks/useImageSend"
 
 // Image bubble: data-URL or fallback to task asset 
 function ImageBubble({ src }: { src: string }) {

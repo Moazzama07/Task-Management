@@ -1,5 +1,4 @@
 import { X, Send, Image as ImageIcon, Upload } from "lucide-react"
-import type { ChatMessage } from "./messageData"
 
 //  Hidden file input 
 interface HiddenFileInputProps {
