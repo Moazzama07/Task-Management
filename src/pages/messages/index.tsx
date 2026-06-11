@@ -6,7 +6,7 @@ import { contacts as initialContacts, chatMessages as initialMessages } from "./
 import type { ChatMessage } from "./messageData"
 
 export default function Messages() {
-    const [activeId, setActiveId] = useState<string | null>(null)   // null = show list on mobile
+    const [activeId, setActiveId] = useState<string | null>(null)
     const [searchQuery, setSearchQuery] = useState("")
     const [inputValue, setInputValue] = useState("")
     const [messages, setMessages] = useState<ChatMessage[]>(initialMessages)
@@ -42,13 +42,8 @@ export default function Messages() {
     }
 
     return (
-        <div className="flex h-full rounded-3xl border border-[#E8E8ED] bg-white shadow-sm overflow-hidden">
+        <div className="flex h-full rounded-xl border border-[#E8E8ED] bg-white shadow-sm overflow-hidden">
 
-            {/* ════════════════════════════════════════════
-          CONTACT SIDEBAR
-          desktop : always visible (w-72, border-r)
-          mobile  : full-width, hidden when chat open
-         ════════════════════════════════════════════ */}
             <div
                 className={`
           flex-shrink-0 flex flex-col overflow-hidden border-r border-[#EBEBF0]
@@ -74,11 +69,6 @@ export default function Messages() {
                 />
             </div>
 
-            {/* ════════════════════════════════════════════
-          CHAT PANEL
-          desktop : always visible (flex-1)
-          mobile  : full-width, only shown when chatOpen
-         ════════════════════════════════════════════ */}
             <div
                 className={`
           flex flex-col min-w-0 overflow-hidden

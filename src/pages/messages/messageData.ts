@@ -1,8 +1,8 @@
 export interface Contact {
     id: string
     name: string
-    avatar: string        // initials fallback
-    avatarImg: string     // pravatar URL
+    avatar: string
+    avatarImg: string
     lastMessage: string
     time: string
     isOnline?: boolean
@@ -13,7 +13,7 @@ export interface Contact {
 export interface ChatMessage {
     id: string
     text?: string
-    /** either a data-URL (user-uploaded) or the sentinel "dashboard-preview" */
+
     image?: string
     imageCaption?: string
     time: string

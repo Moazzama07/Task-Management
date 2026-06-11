@@ -2,7 +2,7 @@ import { Search, CheckCheck, Check } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import type { Contact } from "./messageData"
 
-// ─── Read receipt icon ──────────────────────────────────────────────────────
+//Read receipt icon 
 function ReadStatus({ status }: { status: "sent" | "delivered" | "read" | undefined }) {
     if (!status) return null
     if (status === "read") return <CheckCheck size={12} className="text-[#5C5CE5]" />
@@ -10,7 +10,7 @@ function ReadStatus({ status }: { status: "sent" | "delivered" | "read" | undefi
     return <Check size={12} className="text-[#9898A6]" />
 }
 
-// ─── Contact row ────────────────────────────────────────────────────────────
+// Contact row 
 interface ContactRowProps {
     contact: Contact
     isActive: boolean
@@ -57,7 +57,7 @@ function ContactRow({ contact, isActive, onClick }: ContactRowProps) {
     )
 }
 
-// ─── Main export ────────────────────────────────────────────────────────────
+//  Main export 
 interface MessageProps {
     contacts: Contact[]
     activeId: string
@@ -82,14 +82,15 @@ export default function Message({
             {/* Search — fixed at top */}
             <div className="px-4 pt-4 pb-3 flex-shrink-0">
                 <div className="flex items-center gap-2 bg-[#F5F5FA] rounded-xl px-3 py-2.5">
-                    <Search size={15} className="text-[#9898A6] flex-shrink-0" />
+
                     <input
                         type="text"
                         value={searchQuery}
                         onChange={(e) => onSearchChange(e.target.value)}
                         placeholder="Search Name"
-                        className="flex-1 bg-transparent text-sm text-[#3C3C46] placeholder:text-[#B0B0C0] outline-none"
+                        className="flex-1 bg-transparent text-sm text-[#141522] placeholder:text-[#8E92BC] outline-none"
                     />
+                    <Search size={16} className="text-[#141522] flex-shrink-0" />
                 </div>
             </div>
 

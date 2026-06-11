@@ -1,51 +1,7 @@
-import { useState, useRef, useCallback } from "react"
 import { X, Send, Image as ImageIcon, Upload } from "lucide-react"
 import type { ChatMessage } from "./messageData"
 
-// ─── Hook ────────────────────────────────────────────────────────────────────
-export function useImageSend(onSendImage: (msg: ChatMessage) => void) {
-    const [preview, setPreview] = useState<string | null>(null)
-    const [caption, setCaption] = useState("")
-    const fileInputRef = useRef<HTMLInputElement>(null)
-
-    const openPicker = useCallback(() => {
-        fileInputRef.current?.click()
-    }, [])
-
-    const onFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]
-        if (!file) return
-        const reader = new FileReader()
-        reader.onload = (ev) => {
-            setPreview(ev.target?.result as string)
-        }
-        reader.readAsDataURL(file)
-        // reset input so same file can be re-selected
-        e.target.value = ""
-    }, [])
-
-    const sendImage = useCallback(() => {
-        if (!preview) return
-        onSendImage({
-            id: Date.now().toString(),
-            image: preview,
-            imageCaption: caption.trim() || undefined,
-            time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-            isMine: true,
-        })
-        setPreview(null)
-        setCaption("")
-    }, [preview, caption, onSendImage])
-
-    const cancel = useCallback(() => {
-        setPreview(null)
-        setCaption("")
-    }, [])
-
-    return { preview, caption, setCaption, openPicker, onFileChange, sendImage, cancel, fileInputRef }
-}
-
-// ─── Hidden file input (render once in chat) ─────────────────────────────────
+//  Hidden file input 
 interface HiddenFileInputProps {
     fileInputRef: React.RefObject<HTMLInputElement>
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
@@ -63,7 +19,7 @@ export function HiddenFileInput({ fileInputRef, onChange }: HiddenFileInputProps
     )
 }
 
-// ─── Image preview modal ─────────────────────────────────────────────────────
+// Image preview modal 
 interface ImagePreviewModalProps {
     preview: string
     caption: string
@@ -144,7 +100,7 @@ export function ImagePreviewModal({
     )
 }
 
-// ─── Paperclip trigger button (export for use in chat input bar) ─────────────
+// Paperclip trigger button (export for use in chat input bar) 
 interface AttachButtonProps {
     onClick: () => void
 }

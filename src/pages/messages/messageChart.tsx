@@ -10,7 +10,7 @@ import { VoiceCallOverlay, useVoiceCall } from "./Usevoicecall"
 import { VideoCallOverlay, useVideoCall } from "./Usevideocall"
 import { useImageSend, HiddenFileInput, ImagePreviewModal, AttachButton } from "./Useimagesend"
 
-// ─── Image bubble: data-URL or fallback to task asset ───────────────────────
+// Image bubble: data-URL or fallback to task asset 
 function ImageBubble({ src }: { src: string }) {
     const imgSrc = src === "dashboard-preview" ? taskImage : src
     return (
@@ -20,14 +20,14 @@ function ImageBubble({ src }: { src: string }) {
     )
 }
 
-// ─── Chat bubble ─────────────────────────────────────────────────────────────
+// Chat bubble 
 function Bubble({ msg, contact }: { msg: ChatMessage; contact: Contact }) {
     if (msg.isMine) {
         return (
             <div className="flex flex-col items-end gap-0.5">
                 {msg.dateLabel && (
                     <div className="self-center mb-2">
-                        <span className="text-xs text-[#9898A6] bg-white px-3 py-1 rounded-full shadow-sm">
+                        <span className="text-[14px] font-semibold text-white bg-[#141522] px-4 py-2 rounded-lg shadow-sm">
                             {msg.dateLabel}
                         </span>
                     </div>
@@ -37,18 +37,18 @@ function Bubble({ msg, contact }: { msg: ChatMessage; contact: Contact }) {
                     <div className="max-w-[280px] flex flex-col items-end gap-1.5">
                         <ImageBubble src={msg.image} />
                         {msg.imageCaption && (
-                            <div className="bg-[#5C5CE5] text-white rounded-2xl rounded-tr-sm px-4 py-2.5">
+                            <div className="bg-[#546FFF] text-white rounded-2xl rounded-tr-sm px-4 py-2.5">
                                 <p className="text-sm leading-relaxed">{msg.imageCaption}</p>
                             </div>
                         )}
                     </div>
                 ) : (
-                    <div className="bg-[#5C5CE5] text-white rounded-2xl rounded-tr-sm px-4 py-2.5 max-w-[280px]">
+                    <div className="bg-[#546FFF] text-[14px] text-white rounded-2xl rounded-tr-sm px-4 py-2.5 max-w-[280px]">
                         <p className="text-sm leading-relaxed">{msg.text}</p>
                     </div>
                 )}
 
-                {msg.time && <span className="text-[10px] text-[#9898A6]">{msg.time}</span>}
+                {msg.time && <span className="text-[10px] text-[#8E92BC]">{msg.time}</span>}
             </div>
         )
     }
@@ -63,7 +63,7 @@ function Bubble({ msg, contact }: { msg: ChatMessage; contact: Contact }) {
             </Avatar>
             <div className="flex flex-col gap-0.5 max-w-[280px]">
                 <div className="bg-white border border-[#E0E0EA] rounded-2xl rounded-bl-sm px-4 py-2.5 shadow-sm">
-                    <p className="text-sm text-[#3C3C46] leading-relaxed">{msg.text}</p>
+                    <p className="text-[14px] text-[#141522] leading-relaxed">{msg.text}</p>
                 </div>
                 {msg.time && <span className="text-[10px] text-[#9898A6] ml-1">{msg.time}</span>}
             </div>
@@ -71,7 +71,7 @@ function Bubble({ msg, contact }: { msg: ChatMessage; contact: Contact }) {
     )
 }
 
-// ─── Main export ─────────────────────────────────────────────────────────────
+// Main export 
 interface MessageChatProps {
     contact: Contact
     messages: ChatMessage[]
@@ -172,7 +172,7 @@ export default function MessageChat({
                         )}
                     </div>
                     <div>
-                        <p className="text-sm font-semibold text-[#3C3C46]">{contact.name}</p>
+                        <p className="text-sm font-semibold text-[#141522]">{contact.name}</p>
                         <p className="text-xs text-green-500 font-medium">Online</p>
                     </div>
                 </div>
@@ -226,7 +226,7 @@ export default function MessageChat({
                 <div className="flex items-center gap-3 bg-[#F5F5FA] rounded-2xl px-4 py-2.5">
                     <button
                         onClick={() => setEmojiOpen((o) => !o)}
-                        className={`transition-colors flex-shrink-0 ${emojiOpen ? "text-[#5C5CE5]" : "text-[#9898A6] hover:text-[#5C5CE5]"}`}
+                        className={`transition-colors flex-shrink-0 ${emojiOpen ? "text-[#5C5CE5]" : "text-[#8E92BC] hover:text-[#5C5CE5]"}`}
                         aria-label="Emoji picker"
                     >
                         <Smile size={18} />
@@ -238,19 +238,18 @@ export default function MessageChat({
                         onChange={(e) => onInputChange(e.target.value)}
                         onKeyDown={handleKeyDown}
                         placeholder="Send your message..."
-                        className="flex-1 bg-transparent text-sm text-[#3C3C46] placeholder:text-[#B0B0C0] outline-none"
+                        className="flex-1 bg-transparent text-sm text-[#8E92BC] placeholder:text-[#8E92BC] outline-none"
                     />
 
-                    {/* Image attach button from useImageSend */}
                     <AttachButton onClick={img.openPicker} />
 
                     <button
                         onClick={onSend}
-                        disabled={!inputValue.trim()}
-                        className="w-8 h-8 bg-[#5C5CE5] rounded-xl flex items-center justify-center text-white hover:bg-[#4A4AD4] transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0"
+                        disabled={false}
+                        className="w-8 h-8 bg-[#546FFF] rounded-xl flex items-center justify-center text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0"
                         aria-label="Send message"
                     >
-                        <Send size={14} />
+                        <Send size={12} />
                     </button>
                 </div>
             </div>
