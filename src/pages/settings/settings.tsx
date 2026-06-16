@@ -1,42 +1,9 @@
-import { useState, useEffect, useCallback } from "react"
 import { CheckCircle2, AlertTriangle, X } from "lucide-react"
+import { NotificationSettings } from "./Notification"
+import { useSettings, Tab, GeneralState } from "./hooks/useSettings"
 
-// Types 
-type Tab = "general" | "notification"
-
-interface GeneralState {
-    language: string
-    timezone: string
-    timeFormat: "24h" | "12h"
-}
-
-interface NotificationItem {
-    id: string
-    label: string
-    enabled: boolean
-}
-
-// Saved 
-const GENERAL_DEFAULTS: GeneralState = {
-    language: "English (Default)",
-    timezone: "Asia/Karachi",
-    timeFormat: "24h",
-}
-
-const NOTIFICATION_DEFAULTS: NotificationItem[] = [
-    { id: "message", label: "Message", enabled: true },
-    { id: "task-update", label: "Task Update", enabled: false },
-    { id: "task-deadline", label: "Task Deadline", enabled: true },
-    { id: "mentor-help", label: "Mentor Help", enabled: false },
-]
-
-//  Toast 
+// Toast
 function Toast({ message, onClose }: { message: string; onClose: () => void }) {
-    useEffect(() => {
-        const t = setTimeout(onClose, 3000)
-        return () => clearTimeout(t)
-    }, [onClose])
-
     return (
         <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-2xl bg-[#1A1A2E] px-5 py-3.5 shadow-[0_8px_32px_rgba(0,0,0,0.18)] animate-[slideUp_0.3s_ease-out]">
             <CheckCircle2 className="h-4 w-4 text-[#4ADE80] shrink-0" />
@@ -68,7 +35,7 @@ function UnsavedBanner({ onDiscard }: { onDiscard: () => void }) {
     )
 }
 
-// SelectField 
+// SelectField
 function SelectField({
     label,
     value,
@@ -109,7 +76,7 @@ function SelectField({
     )
 }
 
-//  TimeFormatToggle
+// TimeFormatToggle
 function TimeFormatToggle({
     value,
     onChange,
@@ -138,7 +105,7 @@ function TimeFormatToggle({
     )
 }
 
-//  GeneralSettings
+// GeneralSettings
 function GeneralSettings({
     form,
     onChange,
@@ -176,107 +143,23 @@ function GeneralSettings({
     )
 }
 
-//  Toggle 
-function Toggle({ enabled, onToggle }: { enabled: boolean; onToggle: () => void }) {
-    return (
-        <button
-            onClick={onToggle}
-            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-200 focus:outline-none ${enabled ? "bg-[#4F6EF7]" : "bg-[#E8E8EF]"
-                }`}
-        >
-            <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-md transition-transform duration-200 ${enabled ? "translate-x-6" : "translate-x-1"
-                    }`}
-            />
-        </button>
-    )
-}
-
-//  NotificationSettings 
-function NotificationSettings({
-    items,
-    onToggle,
-}: {
-    items: NotificationItem[]
-    onToggle: (id: string) => void
-}) {
-    return (
-        <div>
-            {items.map((item) => (
-                <div
-                    key={item.id}
-                    className="flex items-center justify-start gap-4 py-4"
-                >
-                    <Toggle
-                        enabled={item.enabled}
-                        onToggle={() => onToggle(item.id)}
-                    />
-
-                    <span className="text-sm font-medium text-[#1A1A2E]">
-                        {item.label}
-                    </span>
-                </div>
-            ))}
-        </div>
-    )
-}
-
-//  helpers
-function generalChanged(a: GeneralState, b: GeneralState) {
-    return a.language !== b.language || a.timezone !== b.timezone || a.timeFormat !== b.timeFormat
-}
-
-function notifChanged(a: NotificationItem[], b: NotificationItem[]) {
-    return a.some((item, i) => item.enabled !== b[i].enabled)
-}
-
-//  Main Settings 
+// Main Settings
 export default function Settings() {
-    const [activeTab, setActiveTab] = useState<Tab>("general")
-
-    // saved state (committed on Save)
-    const [savedGeneral, setSavedGeneral] = useState<GeneralState>(GENERAL_DEFAULTS)
-    const [savedNotif, setSavedNotif] = useState<NotificationItem[]>(NOTIFICATION_DEFAULTS)
-
-    // draft state (what user is currently editing)
-    const [draftGeneral, setDraftGeneral] = useState<GeneralState>(GENERAL_DEFAULTS)
-    const [draftNotif, setDraftNotif] = useState<NotificationItem[]>(NOTIFICATION_DEFAULTS)
-
-    // toast
-    const [toast, setToast] = useState<string | null>(null)
-
-    // dirty flags
-    const isDirtyGeneral = generalChanged(draftGeneral, savedGeneral)
-    const isDirtyNotif = notifChanged(draftNotif, savedNotif)
-    const isDirty = activeTab === "general" ? isDirtyGeneral : isDirtyNotif
-
-    // patch general draft
-    const patchGeneral = useCallback((patch: Partial<GeneralState>) => {
-        setDraftGeneral((prev) => ({ ...prev, ...patch }))
-    }, [])
-
-    // toggle notif draft
-    const toggleNotif = useCallback((id: string) => {
-        setDraftNotif((prev) =>
-            prev.map((item) => (item.id === id ? { ...item, enabled: !item.enabled } : item))
-        )
-    }, [])
-
-    // discard
-    const handleDiscard = () => {
-        if (activeTab === "general") setDraftGeneral(savedGeneral)
-        else setDraftNotif(savedNotif)
-    }
-
-    // save
-    const handleSave = () => {
-        if (activeTab === "general") setSavedGeneral(draftGeneral)
-        else setSavedNotif(draftNotif)
-        setToast("Settings saved successfully!")
-    }
-
-    // tab switch: warn if dirty but allow switching freely (banner stays)
-    const handleTabSwitch = (tab: Tab) => setActiveTab(tab)
+    const {
+        activeTab,
+        draftGeneral,
+        draftNotif,
+        isDirty,
+        isDirtyGeneral,
+        isDirtyNotif,
+        toast,
+        patchGeneral,
+        toggleNotif,
+        handleDiscard,
+        handleSave,
+        handleTabSwitch,
+        setToast,
+    } = useSettings()
 
     return (
         <>
